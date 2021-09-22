@@ -1,0 +1,14 @@
+# common editor backups
+*.swp
+*~
+\#*\#
+
+# Output folders
+MC_*
+hbooks*
+
+# Some garbage files
+fort.13
+fort.80
+lossc.txt
+omgWidthGaus.C
