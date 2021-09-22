@@ -1,0 +1,1170 @@
+      SUBROUTINE EFMASS (NPART,IPART,EFMS_S,ESUM_S,OK)
+C     **********************************************
+C     CALCULATES EFFECTIVE MASS FOR NPART PARTICLES
+C     WITH NUMBERS IPART
+C     Author:  Nadia Russakovich
+c     Updated:
+c*****************************************************
+      COMMON /ZWALLS/ ZWALL1,ZWALL !cmike
+      COMMON /GAMMAS/ NGAM, XGAM(60), YGAM(60), EGAM(60), DCOS(3,60)
+      COMMON /LOSSD / LOSSD(70)
+      COMMON /MOMENT/ pi0mass,PLAB(3,60)
+      common /targandbeam/ beammomentum, targetmass
+      common /correlation/ chislitel, znamenatel1, znamenatel2
+      real qqq1,qqq2,etot,energy_2gamma,mm,cosalfa,cos1,cos2,sqrt_efm
+      integer I1,I2,iamptot,a,qqq,partts,i,j
+      common /etotal/ etot,iamptot
+      real myenergy
+      logical exists
+      character*3 mixstatus
+      double precision Pc(5),Pd(5),Pccms(5),Pa(5),Pb(5),Pbcms(5)
+      real proton_mass, neutron_mass, repulse_energy                    ! ;kondr
+      integer nafnaf_energy, wall_proc,mclus_bad,ef,efmm
+      common /bad_something/ nafnaf_energy,wall_proc,mclus_bad,ef,efmm
+C
+      data proton_mass, neutron_mass /938.272, 939.565/                 ! ;kondr
+      data mmin /100.0/, mmax /170.0/          !   All
+      data targetmass,beammomentum /939.57,7000.0/
+      data AmKplus,Ampiplus /493.677,139.57/
+      common /myen/ myenergy
+      DIMENSION IPART(60)
+      dimension partts(20)
+      LOGICAL OK
+      real assimetry1, assimetry2 
+      common /triggers/c1c2c3(3), c1min,c2min,c3min
+c      data c1min,c2min/ 200, 130 /    ! c
+c      data c1min,c2min/ 280, 150 /    ! be
+c      data c1min,c2min/ 255, 170 /    ! cu3
+c      data c1min,c2min/ 250, 150 /    ! cu6
+      common/ptransverce/ ptrans
+      common/ptc/ ptcut
+      common /t_missmass/ t,missmass
+      common /T_Clock/ tclock,iclock,eta
+      real missmass,t
+      logical eta
+cmike
+      logical ktf ! <-- kakaya-to fignya na gistogramme -13002
+cmike
+!kondr++{ !2gamma event mixing    ; (cmix-2gg 2 gamma)
+      integer imix
+      parameter (imix=100)
+      integer ikplus, ipplus, ipiplus                    ! iterators for every beam particle
+      integer counter, tempcounter                       ! iterators
+      integer energy_slice                               ! == qqq2 ? for filling sliced histos
+      real*8 P1g_temp(4), P2g_temp(4), efm_temp          ! temporary containers for 1st and 2nd gamma 4-momentum ; efm to put in the histogramm
+      real*8 P1g_mix(4, imix, 3), P2g_mix(4, imix, 3)    ! containers for mixed events [component(4), number(10), type(k+,p+,pi+)]
+      save P1g_temp, P2g_temp, P1g_mix, P2g_mix, ikplus, ipplus, ipiplus
+      data ikplus, ipplus, ipiplus /0, 0, 0/
+!kondr--}
+C
+C-    write(*,*) 'EFMASS CALLED!, NPART=',NPART
+      ESUM  = 0.
+      PXSUM = 0.
+      PYSUM = 0.
+      PZSUM = 0.
+      OK = .FALSE.
+
+!kondr++{ !2gamma event mixing: temporary momentum storage      ; (cmix-2gg 2 gamma)
+      if(npart.eq.2)then
+C            \/  1st gamma \/                  \/  2nd gamma \/
+         P1g_temp(4) = EGAM(ipart(1))  ; P2g_temp(4) = EGAM(ipart(2))
+         P1g_temp(1) = PLAB(1,ipart(1)); P2g_temp(1) = PLAB(1,ipart(2))
+         P1g_temp(2) = PLAB(2,ipart(1)); P2g_temp(2) = PLAB(2,ipart(2))
+         P1g_temp(3) = PLAB(3,ipart(1)); P2g_temp(3) = PLAB(3,ipart(2))
+      endif
+!kondr--}
+
+      DO 10 I = 1, NPART
+           IP = IPART(I)
+        ESUM  = ESUM  + EGAM(IP)
+        PXSUM = PXSUM + PLAB(1,IP)
+        PYSUM = PYSUM + PLAB(2,IP)
+        PZSUM = PZSUM + PLAB(3,IP)
+        CALL hf1(5033,egam(ip),1.)
+  10  CONTINUE
+C
+CEvd+
+C     Beam 4-momentum in lab
+C
+      if((c1c2c3(1).gt.c1min).and.(c1c2c3(2).gt.c2min))then
+          Pa(5)=Ampiplus
+      else
+          Pa(5)=AmKplus
+      endif
+C
+      Pa(1)=0.
+      Pa(2)=0.
+      Pa(3)=beammomentum
+      Pa(4)=dsqrt(Pa(1)**2+Pa(2)**2+Pa(3)**2+Pa(5)**2)
+C
+C     Target 4-momenrum in lab
+      Pb(5)=targetmass
+      Pb(1)=0.
+      Pb(2)=0.
+      Pb(3)=0.
+      Pb(4)=Pb(5)
+C
+C     C-particle in reaction a+b -> c+X (lab)
+      Pc(1)=pxsum
+      Pc(2)=pysum
+      Pc(3)=pzsum
+      Pc(4)=esum
+      Pc(5)=dsqrt(Pc(4)**2-Pc(1)**2-Pc(2)**2-Pc(3)**2)
+C
+C     s  and T invariant variables
+      s=(Pa(4)+Pb(5))**2-Pa(1)**2-Pa(2)**2-Pa(3)**2
+C
+      T=(Pc(4)-Pa(4))**2-(Pc(1)-Pa(1))**2-(Pc(2)-Pa(2))**2-
+     *                   (Pc(3)-Pa(3))**2
+C
+      U=(Pd(4)-Pa(4))**2-(Pd(1)-Pa(1))**2-(Pd(2)-Pa(2))**2-
+     *                   (Pd(3)-Pa(3))**2
+C
+C!!!!-
+      TT=-1.E-6*T
+      IF (TT.lt.0.) TT=-TT
+C      
+      UU=-1.E-6*U 
+      IF (UU.lt.0.) UU=-UU   
+C!!!!-
+C-    IF (TT.LE.0.) THEN
+C-	  LOSSD(26) = LOSSD(26) + 1
+C-	  efmm=efmm+1
+C-	  return
+C-    END IF
+C 
+C     Target in CMS
+      Pbcms(5)=targetmass
+      Pbcms(4)=(s+Pb(5)**2-Pa(5)**2)/(2.*sqrt(s))
+      Pbcms(1)=0.
+      Pbcms(2)=0.
+      Pbcms(3)=-1.*dsqrt(Pbcms(4)**2-Pbcms(5)**2)
+C
+C     to calc Xf we need use 4-momentum of C in CMS
+      call arturs(Pc,Pbcms,Pccms)
+C
+      AmXmin =939.565
+      EffMass=      Pc(5)
+      Xfwrong=2.*Pccms(3)/sqrt(s)
+      Esmcms=    Pccms(4)
+      pt  =dsqrt(Pccms(1)**2+Pccms(2)**2)
+      Emax=     (s+Pc(5)**2-AmXmin**2)/(2*sqrt(s))
+      Amt  =sqrt(pt**2+EffMass**2)
+      Plmax=dsqrt(Emax**2-Pc(5)**2-pt**2)
+      W = (Xf**2+(Amt/Plmax)**2)**(0.5)/pt
+      A =       Emax+Plmax
+      Xf=   Pccms(3)/Plmax
+      Xplus=(Pccms(3)+Pccms(4))/A
+C
+!kondr++{
+      repulse_energy = ((neutron_mass**2 + proton_mass**2 - T)
+     &               /(2*neutron_mass))  - proton_mass
+C
+C-    if((repulse_energy + esum).gt.8000.) return    ! for fun ;kondr
+      if((repulse_energy + esum).gt.8500.) return    ! for fun ;kondr
+      call hf1(5054,repulse_energy       , 1.)       ! cut for the max energy in lgd2, it can't exceed the beam energy. 
+      call hf1(5055,repulse_energy + esum, 1.)       ! we set 8000 instead of 7000 because of the noise in lgd2 which increases the real energy.
+      call hf1(5054+NPART,repulse_energy + esum, 1.) ! 2g, 3g and 4g energies
+!kondr--} 
+C
+C-    write(*,*) 'Pa=',(Pa(l),l=1,5)
+C-    write(*,*) 'Pb=',(Pb(l),l=1,5)
+C-    write(*,*) 'Pc=',(Pc(l),l=1,5)
+C
+      do j=1,4
+      Pd(j)= Pa(j)+Pb(j)-Pc(j)
+      enddo
+C      
+      sqrMM= Pd(4)**2 - Pd(1)**2 - Pd(2)**2 - Pd(3)**2
+C      
+      if (sqrMM.lt.0.) then
+          sqrMM=-sqrMM
+C-        write(*,*) 'EFMAS_S,MisMs,T=',NGAM,ESUM_S, EFMS_S,sqrMM,T
+          LOSSD(26) = LOSSD(26) + 1
+          efmm=efmm+1
+C-        return
+      endif
+C
+      QMisMs=     sqrMM
+      XMisMs=sqrt(sqrMM)      
+C
+      Xparticle=pc(1)*zwall1/pc(3)
+      Yparticle=pc(2)*zwall1/pc(3)
+C
+CEvd-
+      call hf1(5040,float(npart),1.)
+      call hf1(5041,esum,1.)
+      EFM = ESUM**2 - PXSUM**2 - PYSUM**2 - PZSUM**2  !  eto dublirovanie pc(5) s real tochnostyu
+      sqrt_efm=sqrt(efm)
+C
+      IF (EFM.LE.0.) THEN
+          LOSSD(26) = LOSSD(26) + 1
+          ef=ef+1
+          return
+      END IF
+C
+CSdv+ IF (sqrMM.LE.0.) THEN
+C         LOSSD(26) = LOSSD(26) + 1
+C         efmm=efmm+1
+C	  write(*,*) 'Pc(5),EFM_sqrt=', NPART, EFM, T, sqrMM
+C         return
+CSdv- END IF
+C
+C --- Mandelstam ---
+C
+      SuMand = (S+T+U)*1.E-6
+      call hf1(5250,SuMand,1.)
+C-    write(*,*) 'S+T+U',SuMand
+C
+      Ptrans = PXSUM**2 + PYSUM**2
+      call hf1(-6000,sqrt(Ptrans),1.)
+C      
+      if(ngam.eq.2) then
+C-       call hf2(-6010,sqrt(Ptrans),sqrt_efm ,1.)
+      endif
+C
+! !kondr++{ ! 2d - histogramm Meff vs Pt
+!       hi_number_2d = 7000 + ngam * 100
+!       call hf2(hi_number_2d,     sqrt_efm, sqrt(Ptrans) ,1.)
+!       call hf2(hi_number_2d + 1, sqrt_efm, esum         ,1.)
+! !kondr--}   ! was commented bcs files grow in size...
+CEvd+
+      AmPi0=134.977
+      Wpi0=13.
+      AmEta=547.862
+      Weta=35.
+      if(ngam.eq.2) then
+C
+C     Energy cut
+      x1=xgam(1)
+      y1=ygam(1)
+c-    e1=egam(1)
+      x2=xgam(2)
+      y2=ygam(2)
+c     e2=egam(2)
+C     
+C     Energy histos                                     !  No histos
+C-      if(esum.gt.7000.) call hf1(-70050,EffMass,1.)
+C-      if(esum.gt.7500.) call hf1(-70051,EffMass,1.)
+C-      if(esum.gt.8000.) call hf1(-70052,EffMass,1.)
+C-      if(esum.gt.8500.) call hf1(-70053,EffMass,1.)
+C
+C-      if(EffMass.gt.(AmPi0-3.*Wpi0).and.EffMass.lt.(AmPi0+3.*Wpi0))
+C-     *        then
+C-         call hf1(-71020,esum,1.)
+C-         if(esum.gt.7000.) then
+C-            call hf2(-70030,x1,y1,1.)
+C-            call hf2(-70030,x2,y2,1.)
+C-            call hf2(-70040,xparticle,yparticle,1.)
+C-         endif
+C-
+C-      else
+C-         if(EffMass.gt.(AmPi0-6.*Wpi0).and.EffMass.lt.(AmPi0+6.*Wpi0))
+C-     *     then
+C-            call hf1(-71320,esum,1.)
+C-            if(esum.gt.7000.) then
+C-               call hf2(-70330,x1,y1,1.)
+C-               call hf2(-70330,x2,y2,1.)
+C-               call hf2(-70340,xparticle,yparticle,1.)
+C-            endif
+C-         endif
+C-      endif 
+C-      if(EffMass.gt.(AmEta-2.*Weta).and.EffMass.lt.(AmEta+2.*Weta))
+C-     *        then
+C-         call hf1(-71120,esum,1.)
+C-         if(esum.gt.7000.) then
+C-            call hf2(-70130,x1,y1,1.)
+C-            call hf2(-70130,x2,y2,1.)
+C-            call hf2(-70140,xparticle,yparticle,1.)
+C-         endif
+C-
+C-      else
+C-         if(EffMass.gt.(AmEta-4.*Weta).and.EffMass.lt.(AmEta+4.*Weta))
+C-     *        then
+C-            call hf1(-71420,esum,1.)
+C-            if(esum.gt.7000.) then
+C-               call hf2(-70430,x1,y1,1.)
+C-               call hf2(-70430,x2,y2,1.)
+C-               call hf2(-70440,xparticle,yparticle,1.)
+C-            endif
+C-
+C-         endif
+C-      endif
+C
+C
+C Energy cut 
+C         do j=0,9
+C         if(esum.gt.(1000.+500*j))then
+CC Pi0
+Cc         if(EffMass.gt.(AmPi0-3.*Wpi0).and.EffMass.lt.(AmPi0+3.*Wpi0))
+Cc     *      then
+Cc            call hf2(-70010-j,x1,y1,1.)
+Cc            call hf2(-70010-j,x2,y2,1.)
+Cc            call hf2(-70020-j,xparticle,yparticle,1.)
+CC
+C            call hf1(-71060-j,      pt,1.)
+C            call hf1(-71070-j,      Xf,1.)
+C            call hf1(-71080-j,   Xplus,1.)
+C            call hf1(-71090-j, Xfwrong,1.)
+C            call hf2(-71050-j,pt**2,xf,1.)
+C            call hf2(-71040-j,t, sqrMM,1.)
+CC     
+C            call hf1(-73060-j,    pt, W)
+C            call hf1(-73070-j,    Xf, W)
+C            call hf1(-73080-j, Xplus, W)
+CC     
+C            call hf1(-72060-j,     pt,Esmcms)
+C            call hf1(-72070-j,     Xf,Esmcms)
+C            call hf1(-72090-j,Xfwrong,Esmcms)
+C            call hf1(-72080-j,  Xplus,Esmcms)
+C            call hf1(-72030-j,  pt**2,Esmcms)
+C            call hf2(-72050-j,pt**2,xf,Esmcms)
+CC     
+C            call hf1(-74080-j, Xplus,Xplus)
+C            call hf1(-71010-j,     T,   1.)
+C            call hf1(-72010-j,     T,Esmcms)
+C         else
+CC     
+C           if(EffMass.gt.(AmPi0-6.*Wpi0).and.EffMass.lt.(AmPi0+6.*Wpi0))
+C     *           then
+C               call hf2(-70310-j,x1,y1,1.)
+C               call hf2(-70310-j,x2,y2,1.)
+C               call hf2(-70320-j,xparticle,yparticle,1.)
+CC
+C               call hf1(-71360-j,      pt,1.)
+C               call hf1(-71370-j,      Xf,1.)
+C               call hf1(-71380-j,   Xplus,1.)
+C               call hf1(-71390-j, Xfwrong,1.)
+C               call hf2(-71350-j,pt**2,xf,1.)
+C               call hf2(-71340-j, t,sqrMM,1.)
+CC     
+C               call hf1(-73360-j,    pt, W)
+C               call hf1(-73370-j,    Xf, W)
+C               call hf1(-73380-j, Xplus, W)
+CC     
+C               call hf1(-72360-j,     pt,Esmcms)
+C               call hf1(-72370-j,     Xf,Esmcms)
+C               call hf1(-72390-j,Xfwrong,Esmcms)
+C               call hf1(-72380-j,  Xplus,Esmcms)
+C               call hf1(-72330-j,  pt**2,Esmcms)
+C               call hf2(-72350-j,pt**2,xf,Esmcms)
+CC     
+C               call hf1(-74380-j, Xplus,Xplus)
+C               call hf1(-71310-j,     T,   1.)
+C               call hf1(-72310-j,     T,Esmcms)
+C            endif
+C         endif
+CC
+CC Eta
+C         if(EffMass.gt.(AmEta-2.*Weta).and.EffMass.lt.(AmEta+2.*Weta))
+C     *      then
+C            call hf2(-70110-j,x1,y1,1.)
+C            call hf2(-70110-j,x2,y2,1.)
+C            call hf2(-70120-j,xparticle,yparticle,1.)
+CC
+C            call hf1(-71160-j,      pt,1.)
+C            call hf1(-71170-j,      Xf,1.)
+C            call hf1(-71180-j,   Xplus,1.)
+C            call hf1(-71190-j, Xfwrong,1.)
+C            call hf2(-71150-j,pt**2,xf,1.)
+C            call hf2(-71140-j, t,sqrMM,1.)
+CC     
+C            call hf1(-73160-j,    pt, W)
+C            call hf1(-73170-j,    Xf, W)
+C            call hf1(-73180-j, Xplus, W)
+CC     
+C            call hf1(-72160-j,     pt,Esmcms)
+C            call hf1(-72170-j,     Xf,Esmcms)
+C            call hf1(-72190-j,Xfwrong,Esmcms)
+C            call hf1(-72180-j,  Xplus,Esmcms)
+C            call hf1(-72130-j,  pt**2,Esmcms)
+C            call hf2(-72150-j,pt**2,xf,Esmcms)
+CC     
+C            call hf1(-74180-j, Xplus,Xplus)
+C            call hf1(-71110-j,     T,   1.)
+C            call hf1(-72110-j,     T,Esmcms)
+CC     
+C         else
+CC     
+C           if(EffMass.gt.(AmEta-4.*Weta).and.EffMass.lt.(AmEta+4.*Weta))
+C     *         then
+C               call hf2(-70410-j,x1,y1,1.)
+C               call hf2(-70410-j,x2,y2,1.)
+C               call hf2(-70420-j,xparticle,yparticle,1.)
+CC
+C               call hf1(-71460-j,    pt  ,1.)
+C               call hf1(-71470-j,    Xf  ,1.)
+C               call hf1(-71480-j, Xplus  ,1.)
+C               call hf1(-71490-j,Xfwrong ,1.)
+C               call hf2(-71450-j,pt**2,xf,1.)
+C               call hf2(-71440-j,t,sqrMM, 1.)
+CC     
+C               call hf1(-73460-j,    pt, W)
+C               call hf1(-73470-j,    Xf, W)
+C               call hf1(   -7348, Xplus, W)
+CC     
+C               call hf1(-72460-j,     pt,Esmcms)
+C               call hf1(-72470-j,     Xf,Esmcms)
+C               call hf1(-72490-j,Xfwrong,Esmcms)
+C               call hf1(-72480-j,  Xplus,Esmcms)
+C               call hf1(-72430-j,  pt**2,Esmcms)
+C               call hf2(-72450-j,pt**2,xf,Esmcms)
+CC     
+C               call hf1(-74480-j, Xplus,Xplus)
+C               call hf1(-71410-j,     T,   1.)
+C               call hf1(-72410-j,     T,Esmcms)
+CC     
+C            endif
+C         endif
+C      endif
+C      enddo
+C      endif
+CC      
+C      if(ngam.eq.2.and.sqrt_efm.gt.mmin.and.sqrt_efm.lt.mmax) then
+C        call hf1(-6001,sqrt(Ptrans),1.)
+C        call hf1(-6003,         Xf, 1.)
+C        call hf2(-6011,sqrt(Ptrans),sqrt_efm,1.)
+C      endif
+C      if(ngam.eq.2.and.sqrt_efm.gt.450..and.sqrt_efm.lt.650.) then
+C        call hf1(-6002,sqrt(Ptrans),1.)
+C        call hf1(-6004,         Xf, 1.)   
+C        call hf2(-6012,sqrt(Ptrans),sqrt_efm,1.)
+C      endif
+      ptcut_ = ptcut**2
+      if(Ptrans.lt.ptcut_) return
+C
+! commented ;kondr
+! we don't need THIS mixing
+! ! ! cmike Writing of event for event mixing analysis
+! ! !       if (ngam.eq.2) then
+! ! !         inquire(file='LastEvent.dat',exist=exists)
+! ! !         if(exists) then
+! ! !           open(unit=1,file='LastEvent.dat',status='old')
+! ! !           read(1,*) egamlast,pla1last,pla2last,pla3last
+! ! !           close(1)
+! ! !           mixmass = sqrt((egamlast+egam(2))**2 -
+! ! !      &                   (pla1last+plab(1,2))**2-
+! ! !      &                   (pla2last+plab(2,2))**2-
+! ! !      &                   (pla3last+plab(3,2))**2)
+! ! !           do iecut = 0,9
+! ! !             recut = real(iecut)*500.+1000.
+! ! !             if((egamlast+egam(2)).gt.recut) then
+! ! !               call hf1(-30120-iecut,mixmass,1.)
+! ! !             endif
+! ! !           enddo
+! ! !         mixstatus='old'
+! ! !         else
+! ! !         mixstatus='new'
+! ! !         endif
+! ! !         open(unit=1,file='LastEvent.dat',status=mixstatus)
+! ! !         write(1,*) egam(1),plab(1,1),plab(2,1),plab(3,1)
+! ! !         close(1)
+! ! !       endif
+! ! ! cmike      
+C
+Cmike
+      x1=pxsum*zwall1/pzsum
+      y1=pysum*zwall1/pzsum
+      call hf2(5011,x1,y1,1.)
+      if(ngam.eq.2.and.esum.gt.1000.) then
+        call hf2(-13001,sqrt(1-dcos(3,1)**2),sqrt_efm,1.)
+        call hf2(-13001,sqrt(1-dcos(3,2)**2),sqrt_efm,1.)
+        call hf2(-13002,log(EGAM(1)),sqrt_efm,1.) 
+        call hf2(-13002,log(EGAM(2)),sqrt_efm,1.)
+        ktf =         log(EGAM(1)).lt.7..and.log(EGAM(2)).lt.7.
+        ktf = ktf.and.log(EGAM(1)).gt.6..and.log(EGAM(2)).gt.6.
+        ktf = ktf.and.sqrt_efm.lt.(50.*log(EGAM(1))-275.)
+        ktf = ktf.and.sqrt_efm.lt.(50.*log(EGAM(2))-275.)
+        if(ktf) then
+          x1=pxsum*zwall1/pzsum
+          y1=pysum*zwall1/pzsum
+          call hf2(-13005,x1,y1,1.)
+        endif
+        call hf1(-5003,egam(1),1.)
+        call hf1(-5003,egam(2),1.)
+c        call hf2(-13003,EGAM(1),sqrt_efm,1.)
+c        call hf2(-13003,EGAM(2),sqrt_efm,1.)
+      endif
+cmike
+C      
+c------------effektivnye massy 20401-20408-------------
+c      call hf1(20400+ngam-1,sqrt_efm,1.)
+c------------raspredelenie po srezam po energii dlia 2x gamma------------
+c      write(*,*)'2gamma'
+c
+      if (NPART.eq.2) then
+          I1=IPART(1)
+          I2=IPART(2)
+          energy_2gamma = EGAM(I1)+EGAM(I2)
+c
+c-------------Ugol vyleta pi0 i eta--------------------------------------
+C
+          sqrt_efm=sqrt(efm)
+C
+Cmike------t and missing mass culculation for pi0 and eta mesons
+C
+      call t_and_missmass(0,0,ESUM,PXSUM,PYSUM,PZSUM)
+      if((sqrt_efm.gt. 65..and.sqrt_efm.lt.100.).or.
+     &   (sqrt_efm.gt.170..and.sqrt_efm.lt.205.)) then
+         call t_and_missmass(1,2,ESUM,PXSUM,PYSUM,PZSUM)
+         if(ESUM.gt.6334.)
+     &        call t_and_missmass(1,4,ESUM,PXSUM,PYSUM,PZSUM)
+      endif
+      if( sqrt_efm.gt.100..and.sqrt_efm.lt.170.)then
+         call t_and_missmass(1,1,ESUM,PXSUM,PYSUM,PZSUM)
+         if(ESUM.gt.6334.)
+     &        call t_and_missmass(1,3,ESUM,PXSUM,PYSUM,PZSUM)
+      endif
+C      
+      if((sqrt_efm.gt.420..and.sqrt_efm.lt.480.).or.
+     &   (sqrt_efm.gt.600..and.sqrt_efm.lt.660.))then
+         call t_and_missmass(2,2,ESUM,PXSUM,PYSUM,PZSUM)
+         if(ESUM.gt.6334.)
+     &        call t_and_missmass(2,4,ESUM,PXSUM,PYSUM,PZSUM)
+      endif
+      if( sqrt_efm.gt.480..and.sqrt_efm.lt.600.) then
+         call t_and_missmass(2,1,ESUM,PXSUM,PYSUM,PZSUM)
+         tclock=t
+         eta=.true.
+         if(ESUM.gt.6334.)
+     &        call t_and_missmass(2,3,ESUM,PXSUM,PYSUM,PZSUM)
+      endif
+Cmike
+
+      if (sqrt_efm.gt.450..and.sqrt_efm.lt.650.) then !---coordinates of gammas by eta-meson
+        do nfotona=1,2
+         x1=xgam(nfotona)
+         y1=ygam(nfotona)
+         r=sqrt(x1*x1+y1*y1)
+         call hf2(-5002,x1,y1,1.)
+         call hf2(-5005,r,sqrt_efm,1.)
+        enddo
+      endif
+      if (sqrt_efm.gt.mmin.and.sqrt_efm.lt.mmax) then
+        do nfotona=1,2
+         r=sqrt((xgam(nfotona))**2+ygam(nfotona)**2)
+         call hf2(-5004,r,sqrt_efm,1.)
+        enddo
+         x1=plab(1,1)*zwall1/plab(3,1)
+         y1=plab(2,1)*zwall1/plab(3,1)
+         call hf2(5001,x1,y1,1.)
+         x1=plab(1,2)*zwall1/plab(3,2)
+         y1=plab(2,2)*zwall1/plab(3,2)
+         call hf2(5001,x1,y1,1.)
+         x1=pxsum*zwall1/pzsum
+         y1=pysum*zwall1/pzsum
+         call hf2(5011,x1,y1,1.)
+         call hf1(5012,x1,1.)
+         call hf1(5013,y1,1.)
+        do qqq=1,9
+          qqq1=(qqq-1)*500+1000
+          if (esum.gt.qqq1) then
+C-          a=31090+qqq
+            tgalfa=sqrt(pxsum*pxsum+pysum*pysum)/pzsum
+            alfa=atan(tgalfa)
+            call hf1(31090+qqq,alfa,1.)
+          endif
+        enddo
+      endif
+      if (sqrt_efm.gt.500.and.sqrt_efm.lt.600) then
+        do qqq=1,9
+          qqq1=(qqq-1)*500+1000
+          if (esum.gt.qqq1) then
+            a=31190+qqq
+            tgalfa=sqrt(pxsum*pxsum+pysum*pysum)/pzsum
+            alfa=atan(tgalfa)
+            call hf1(a,alfa,1.)
+          endif
+        enddo
+      endif
+CSdv+!!!      
+      ENDIF
+c---------------------------------------------------------------
+CSdv-   do qqq=1,7
+        do qqq=1,10
+        qqq1=(qqq-1)*500+1000
+        if (energy_2gamma.gt.qqq1) then
+          qqq1=energy_2gamma/(EGAM(I1)+EGAM(I2))
+          a=20600+qqq
+          call hf1(a,qqq1,1.)
+          sqrt_efm=sqrt(EFM)
+          a=20500+qqq
+          call hf2(20700,sqrt_efm,qqq1,1.)
+          qqq1=qqq1*sqrt_efm
+          call hf2(20701,sqrt_efm,qqq1,1.)
+          call hf1(20702,qqq1,1.)
+        endif
+      enddo
+      endif
+      goto 300      ! no, really ? wtf ? ;kondr
+c      
+! \/  this code is to be never executed  \/
+c------------raspredelenie po srezam po energii------------
+CSdv- do qqq=1,8     
+      do qqq=1,10
+        qqq1=(qqq-1)*500+1000
+        sqrt_efm=sqrt(EFM)
+        if(esum.gt.qqq1)then
+          a=20500+qqq+(ngam-2)*10
+          call hf1(a,sqrt_efm,1.)
+        endif
+      enddo
+      write(*,*)'3-4 gamma'
+c--------------kombinatorika dlia 3x,4x gamma-----------------
+      if(ngam.ge.3)then
+        do i=1,(ngam-1)
+          do j=(i+1),ngam
+            call minimas(ipart,i,j,mm)
+CSdv-       do qqq=1,8    
+	    do qqq=1,10
+              qqq1=(qqq-1)*500+1000
+              if(esum.gt.qqq1)then
+                a=30100+qqq+(ngam-3)*10
+                call hf1(20600+(ngam-2)*10+qqq,
+     &               abs((egam(i)-egam(j))/(egam(i)+egam(j))),1.)
+              endif
+            enddo
+!
+!commented ;kondr
+!no histos are filled, no variables are changed. useless... ; anyway this is inside "goto 300" , 20 lines above
+!             if(mm.gt.mmin.and.mm.lt.mmax)then
+!               if(ngam.ge.4)then
+!                 do i1=1,10 
+!                   partts(i1)=0
+!                 enddo
+!                 do i1=1,(i-1) 
+!                   partts(i1)=i1
+!                 enddo
+!                 do i1=(i+1),(j-1)
+!                   partts(i1-1)=i1
+!                 enddo
+!                 do i1=(j+1),ngam
+!                    partts(i1-2)=i1
+!                 enddo
+! c
+!                 do i1=1,(ngam-3)
+!                   do i2=(i1+1),(ngam-2)
+!                     call minimas(iparts,partts(i1),partts(i2),mm)
+! !                     do qqq=1,10
+! !                       qqq1=(qqq-1)*500+1000
+! !                       if(esum.gt.qqq1)then
+! !                         a=30400+qqq+(ngam-3)*10
+! ! c                        call hf1(a,mm,1.)
+! !                       endif
+! !                     enddo
+! !                     if(mm.gt.mmin.and.mm.lt.mmax)then
+! !                       do qqq=1,10
+! !                         qqq1=(qqq-1)*500+1000
+! !                         if(esum.gt.qqq1)then
+! !                           a=30410+qqq+(ngam-4)*10
+! ! c                          call hf1(a,sqrt(efm),1.)
+! !                         endif
+! !                       enddo
+! !                     endif
+!                   enddo
+!                 enddo
+!               endif
+! !               do qqq=1,9
+! !                 qqq1=(qqq-1)*500+1000
+! !                 if(esum.gt.qqq1)then
+! ! c                  call hf1(30200+(ngam-3)*10+qqq-1,sqrt(efm),1.)
+! !                 endif
+! !               enddo
+!             endif
+          enddo
+        enddo
+      endif
+c----------------------------------------------------------
+C
+  300 continue
+C
+C!-     write(*,*) 
+C!-     write(*,*) 'NGAM,esum,sefm=',NGAM,esum,sqrt_efm
+C 
+c--------gistogramirovanie vsego podriad-------------------
+c
+      do qqq=1,10
+c------------energiya--------------------------------------
+        qqq1=1000+500.*(qqq-1)
+        if(esum.gt.qqq1) then
+          call hf1(30000+(ngam-1)*100+qqq-1,esum,1.)
+          do i=1,ngam
+            call hf1(30010+(ngam-1)*100 +qqq-1,egam(i),1.)
+          enddo
+        endif
+c------------efmass----------------------------------------
+c
+CEvd+   additional slices over energy
+        qqq2=(qqq-1)*500+6000
+        if(esum.gt.qqq2) then
+           call hf1(30030+(ngam-1)*100+qqq-1,sqrt_efm,1.)
+        endif
+CEvd-
+        qqq1=(qqq-1)*500+1000
+        if(esum.gt.qqq1) then
+          call hf1(30020+(ngam-1)*100+qqq-1,sqrt_efm,1.)
+C70-
+	  if(XMisMs.lt.1500.) 
+     +       call hf1(30070+(ngam-1)*100+qqq-1,sqrt_efm,1.)
+C     
+          if(esum.lt.(qqq1+500).and.ngam.eq.2) then
+             call hf1(32119+qqq,sqrt_efm,1.)
+          endif
+          if(ngam.eq.2.or.ngam.eq.3) then
+c-------tol'ko K+
+            if(c1c2c3(2).gt.c2min.and.c1c2c3(1).lt.c1min) then
+               call hf1(31510+qqq-1+(ngam-2)*30,sqrt_efm,1.)
+            endif
+c-------tol'ko p+
+            if(c1c2c3(2).lt.c2min.and.c1c2c3(1).lt.c1min) then
+               call hf1(31520+qqq-1+(ngam-2)*30,sqrt_efm,1.)
+            endif
+c-------tol'ko pi+
+            if(c1c2c3(2).gt.c2min.and.c1c2c3(1).gt.c1min) then
+               call hf1(31500+qqq-1+(ngam-2)*30,sqrt_efm,1.)
+            endif
+          endif
+        endif
+      enddo
+C+
+CSdv- Save correct mass and energy before event mixing ---
+C
+      ESUM_S  = ESUM
+      Efms_S  = sqrt(efm)   
+C
+C --- Missing_Mass and t distributions for pi0 and eta mesons ---
+C      
+      EKIN=(proton_mass**2+neutron_mass**2-T)/(2.*neutron_mass)
+     *     -proton_mass
+      ECOR_T = ESUM_S + EKIN
+C    
+C-    write(*,*) 'TTT=', T, ECOR_T, ESUM_S, EKIN  
+C Pi0 --    
+      IF (NGAM.eq.2.and.ESUM_S.gt.1000.) THEN
+          call hf1(5200, Efms_S, 1.)
+C
+          tgalp =sqrt(PXSUM**2+PYSUM**2)/PZSUM
+	  tgalp1=sqrt(plab(1,1)**2+plab(2,1)**2)/plab(3,1)
+          tgalp2=sqrt(plab(1,2)**2+plab(2,2)**2)/plab(3,2)
+C  
+C-	  write(*,*) 'tgalp=',tgalp,tgalp1,tgalp2
+C
+          if (Efms_S.gt.105..and.Efms_S.lt.165.) then
+C-            call hf1(5201, ESUM_S, 1.)
+              call hf1(5201, ECOR_T, 1.)
+	      call hf1(5203, Efms_S, 1.)
+	      call hf1(5205, TT    , 1.)
+	      call hf1(5207, XMisMs, 1.)
+	      call hf2(5209, XMisMs, TT, 1.)
+C
+              do qqq=1,10	      
+	      qqq1=(qqq-1)*500+1000.
+              if(ESUM_S.gt.qqq1) then
+	                         call hf1(30160+qqq-1,tgalp ,1.0)
+C-	                         call hf1(30160+qqq-1,tgalp1,1.0)
+C-				 call hf1(30160+qqq-1,tgalp2,1.0)
+			   endif
+	      enddo
+C         
+	  else if (Efms_S.gt.75..and.Efms_S.lt.195.) then  
+C-            call hf1(5202, ESUM_S, 1.)
+	      call hf1(5202, ECOR_T, 1.)
+              call hf1(5204, Efms_S, 1.)
+              call hf1(5206, TT    , 1.)
+              call hf1(5208, XMisMs, 1.)
+              call hf2(5210, XMisMs, TT, 1.)
+C	      
+C70-	      do qqq=1,10	      
+C-	      qqq1=(qqq-1)*500+1000.
+C-              if(ESUM_S.gt.qqq1) then
+C-	                         call hf1(30170+qqq-1,tgalp ,1.0)
+C-	                         call hf1(30170+qqq-1,tgalp1,1.0)
+C-				 call hf1(30170+qqq-1,tgalp2,1.0)
+C-			   endif
+C-	      enddo      
+          endif
+C Eta --
+          if (Efms_S.gt.480..and.Efms_S.lt.616.) then
+C-            call hf1(5211, ESUM_S, 1.)
+              call hf1(5211, ECOR_T, 1.)
+	      call hf1(5213, Efms_S, 1.)
+	      call hf1(5215, TT	   , 1.)
+	      call hf1(5217, XMisMs, 1.)
+	      call hf2(5219, XMisMs, TT, 1.)
+C	      
+	      do qqq=1,10	      
+	      qqq1=(qqq-1)*500+1000.
+              if(ESUM_S.gt.qqq1) then
+	                         call hf1(30180+qqq-1,tgalp ,1.0)
+C-	                         call hf1(30180+qqq-1,tgalp1,1.0)
+C-				 call hf1(30180+qqq-1,tgalp2,1.0)
+			   endif
+	      enddo    
+C         
+	  else if (Efms_S.gt.412..and.Efms_S.lt.684.) then  
+C-            call hf1(5212, ESUM_S, 1.)
+              call hf1(5212, ECOR_T, 1.)
+              call hf1(5214, Efms_S, 1.)
+              call hf1(5216, TT	   , 1.)
+              call hf1(5218, XMisMs, 1.)
+              call hf2(5220, XMisMs, TT, 1.)
+C	      
+              do qqq=1,10	      
+	      qqq1=(qqq-1)*500+1000.
+              if(ESUM_S.gt.qqq1) then
+	                         call hf1(30190+qqq-1,tgalp ,1.0)
+C-	                         call hf1(30190+qqq-1,tgalp1,1.0)
+C-				 call hf1(30190+qqq-1,tgalp2,1.0)
+			   endif
+	      enddo 	      
+          endif
+      ENDIF      
+C
+!
+!kondr++{ .................. 2 gamma event mixing    ; (cmix-2gg 2 gamma)
+!      write(*,*)'1 ngam = ',ngam
+       if (ngam.eq.2) then
+!      write(*,*)'2 ngam = ',ngam
+c-------tol'ko K+
+         if(c1c2c3(2).gt.c2min.and.c1c2c3(1).lt.c1min) then
+            ikplus = ikplus + 1
+            icurrent = ikplus-(ikplus/imix)*imix+1                      ! -> icurrent = ikplus % imix + 1
+            do tempcounter=1,4
+               P1g_mix(tempcounter,icurrent,1) = P1g_temp(tempcounter)
+               P2g_mix(tempcounter,icurrent,1) = P2g_temp(tempcounter)
+            enddo
+            if (ikplus.lt.imix)       goto 611
+            do icycl=1,imix      !mix cycle
+               if (icycl.eq.icurrent) goto 601
+               esum = P1g_mix(4,icurrent,1) + P2g_mix(4,icycl,1)        !1 is for k+; 2 for p+, 3 for pi+
+               efm  = esum**2 - 
+     &                (P1g_mix(1,icurrent,1) + P2g_mix(1,icycl,1))**2 -
+     &                (P1g_mix(2,icurrent,1) + P2g_mix(2,icycl,1))**2 -
+     &                (P1g_mix(3,icurrent,1) + P2g_mix(3,icycl,1))**2
+               sqrt_efm = sqrt(abs(efm))
+               do counter=1,10   !energy slices cycle
+                  energy_slice=(counter-1)*500+1000
+                  if(esum.gt.energy_slice) 
+     &            call hf1(-(31510+counter-1),sqrt_efm,1.)
+               enddo
+  601       enddo
+  611    endif
+c-------tol'ko p+
+         if(c1c2c3(2).lt.c2min.and.c1c2c3(1).lt.c1min) then
+            ipplus = ipplus + 1
+            icurrent = ipplus-(ipplus/imix)*imix+1                      ! -> icurrent = ipplus % imix + 1
+            do tempcounter=1,4
+               P1g_mix(tempcounter,icurrent,2) = P1g_temp(tempcounter)
+               P2g_mix(tempcounter,icurrent,2) = P2g_temp(tempcounter)
+            enddo
+            if (ipplus.lt.imix)       goto 612
+            do icycl=1,imix      !mix cycle
+               if (icycl.eq.icurrent) goto 602
+               esum = P1g_mix(4,icurrent,2) + P2g_mix(4,icycl,2)        !1 is for k+; 2 for p+, 3 for pi+
+               efm  = esum**2 - 
+     &                (P1g_mix(1,icurrent,2) + P2g_mix(1,icycl,2))**2 -
+     &                (P1g_mix(2,icurrent,2) + P2g_mix(2,icycl,2))**2 -
+     &                (P1g_mix(3,icurrent,2) + P2g_mix(3,icycl,2))**2
+               sqrt_efm = sqrt(abs(efm))
+               do counter=1,10   !energy slices cycle
+                  energy_slice=(counter-1)*500+1000
+                  if(esum.gt.energy_slice) 
+     &            call hf1(-(31520+counter-1),sqrt_efm,1.)
+               enddo
+  602       enddo
+  612    endif
+c-------tol'ko pi+
+         if(c1c2c3(2).gt.c2min.and.c1c2c3(1).gt.c1min) then
+            ipiplus = ipiplus + 1
+            icurrent = ipiplus-(ipiplus/imix)*imix+1                    ! -> icurrent = ikplus % imix + 1
+            do tempcounter=1,4
+               P1g_mix(tempcounter,icurrent,3) = P1g_temp(tempcounter)
+               P2g_mix(tempcounter,icurrent,3) = P2g_temp(tempcounter)
+            enddo
+            if (ipiplus.lt.imix)      goto 613
+            do icycl=1,imix      !mix cycle
+               if (icycl.eq.icurrent) goto 603
+               esum = P1g_mix(4,icurrent,3) + P2g_mix(4,icycl,3)        !1 is for k+; 2 for p+, 3 for pi+
+               efm  = esum**2 - 
+     &                (P1g_mix(1,icurrent,3) + P2g_mix(1,icycl,3))**2 -
+     &                (P1g_mix(2,icurrent,3) + P2g_mix(2,icycl,3))**2 -
+     &                (P1g_mix(3,icurrent,3) + P2g_mix(3,icycl,3))**2
+               sqrt_efm = sqrt(abs(efm))
+               do counter=1,10   !energy slices cycle
+                  energy_slice=(counter-1)*500+1000
+                  if(esum.gt.energy_slice) 
+     &            call hf1(-(31500+counter-1),sqrt_efm,1.)
+               enddo
+  603       enddo
+  613    endif
+      endif
+!kondr--} .................. event mixing
+
+      do i=1,(ngam-1)
+        do j=(i+1),ngam
+c-------------kombinatorika--------------------------------
+          call minimas(ipart,i,j,mm)
+          assimetry1=abs((egam(i)-egam(j))/(egam(i)+egam(j)))
+c--------ugol vyleta chego-to v SCM osnovnoy chasticy------
+          if(ngam.gt.2) then
+            call cos_in_f2(esum,pxsum,pysum,pzsum,sqrt_efm,i,j,cosalfa)
+            cos1=cosalfa
+          endif
+c----------------------------------------------------------
+          do qqq=1,10
+            qqq1=(qqq-1)*500+1000
+            if(esum.gt.qqq1) then
+CEvd+  combine gammas for gamma>2 events (it makes no sense for 2gamma events)
+               if(ngam.gt.2)then
+                  call hf1(30030+(ngam-1)*100+qqq-1,mm,1.)
+               endif
+               if(ngam.eq.3) then ! 3 gamma events
+                  qqq2 = sqrt(efm)
+                  if(qqq2.gt.650.0.and.qqq2.lt.900.0) ! omega(782) mass window
+     +            call hf1(-(30030+(ngam-1)*100+qqq-1),mm,1.)     
+               endif
+               call hf1(30040+(ngam-1)*100+qqq-1,assimetry1,1.)
+CEvd-	       
+               if(sqrt_efm.gt.105..and.sqrt_efm.lt.165.) then
+                  call hf1(32040+(ngam-1)*100+qqq-1,assimetry1,1.)
+               endif
+c
+c---------------efmass with eta----------------------------
+               if (ngam.eq.3.and.mm.gt.498..and.mm.lt.598.) 
+     +             call hf1(30060+(ngam-1)*100+qqq-1,sqrt_efm,1.)	       
+            endif
+            qqq1=(qqq-1)*500 + 1000.
+            if(esum.gt.qqq1) then
+               call hf1(30080+(ngam-1)*100+qqq-1,esum,1.)
+            endif
+          enddo
+cmike
+c-        if(ngam.eq.3.and.esum.gt.1000.) then
+c-           call hf2(-13003,log(egam(i)),mm,1.)
+c-           call hf2(-13003,log(egam(j)),mm,1.)
+c-        endif
+cmike
+c          write(*,*)'ef3'
+c---------------efmass with pi0----------------------------
+          if(mm.gt.mmin.and.mm.lt.mmax)then
+            do qqq=1,10
+              qqq1=(qqq-1)*500+1000
+              if(esum.gt.qqq1) then
+                call hf1(30050+(ngam-1)*100+qqq-1,sqrt_efm,1.)
+                if(ngam.eq.3) then
+c		
+c-------tol'ko K+
+            if(c1c2c3(2).gt.c2min.and.c1c2c3(1).lt.c1min) then
+               call hf1(31570+qqq-1,sqrt_efm,1.)
+            endif
+c-------tol'ko p+
+            if(c1c2c3(2).lt.c2min.and.c1c2c3(1).lt.c1min) then
+               call hf1(31580+qqq-1,sqrt_efm,1.)
+            endif
+c-------tol'ko pi+
+            if(c1c2c3(2).gt.c2min.and.c1c2c3(1).gt.c1min) then
+               call hf1(31560+qqq-1,sqrt_efm,1.)
+            endif                   
+                endif
+              endif
+            enddo
+c------kombinatorika dopolneniya k pi0---------------------
+            if(ngam.ge.4)then
+              do i1=1,10 
+                partts(i1)=0
+              enddo
+              do i1=1,(i-1) 
+                partts(i1)=i1
+              enddo
+              do i1=(i+1),(j-1)
+                partts(i1-1)=i1
+              enddo
+              do i1=(j+1),ngam
+                 partts(i1-2)=i1
+              enddo
+              do i1=1,(ngam-3)
+                do i2=(i1+1),(ngam-2)
+                  call minimas(iparts,partts(i1),partts(i2),mm)
+                  assimetry2=abs((egam(partts(i1))-egam(partts(i2)))/
+     &                           (egam(partts(i1))+egam(partts(i2))))
+                  call cos_in_f2(esum,pxsum,pysum,pzsum,sqrt_efm,
+     &                           partts(i1),partts(i2),cosalfa)
+                  cos2=cosalfa
+                  do qqq=1,10
+                    qqq1=(qqq-1)*500+1000.
+                    if(esum.gt.qqq1)then
+                      call hf1(30060+(ngam-1)*100+qqq-1,mm,1.)
+                    endif
+cmike---------------addition to pi0 from f2
+                    if(ngam.eq.4.and.sqrt_efm.gt.1050.) then
+                      call hf1(-30360-qqq+1,mm,1.)
+                    endif
+cmike
+                    if(ngam.eq.4.and.esum.gt.1000) then
+                      call hf2(-13004,log(egam(partts(i1))),mm,1.)
+                      call hf2(-13004,log(egam(partts(i2))),mm,1.)
+                    endif
+cmike
+                  enddo
+c----------massa pi0+pi0-----------------------------------
+                  if(mm.gt.mmin.and.mm.lt.mmax)then
+                    do qqq=1,10
+                      qqq1=(qqq-1)*500+1000
+                      if(esum.gt.qqq1)then      
+C70-                    call hf1(30070+(ngam-1)*100+qqq-1,sqrt_efm,1.)
+                        call hf1(30090+(ngam-1)*100+qqq-1,assimetry2,1.)
+                        call hf1(30090+(ngam-1)*100+qqq-1,assimetry1,1.)
+                        if(ngam.eq.4.and.sqrt_efm.gt.1150.
+     &                              .and.sqrt_efm.lt.1400.)then
+                          call hf1(31000+qqq-1,cos1,1.)
+                          call hf1(31000+qqq-1,cos2,1.)
+                        endif
+                      endif
+                    enddo
+                  endif
+                enddo
+              enddo
+            endif
+          endif
+c         write(*,*)'ef4'
+        enddo
+      enddo
+c------------------------- pi0 & eta energy ---------------------------
+      if(sqrt_efm.gt.105..and.sqrt_efm.lt.165.) call hf1(5043,esum,1.)
+      if(sqrt_efm.gt.165..and.sqrt_efm.lt.195.) call hf1(5044,esum,1.)
+      if(sqrt_efm.gt. 75..and.sqrt_efm.lt.105.) call hf1(5045,esum,1.)
+      if(sqrt_efm.gt.480..and.sqrt_efm.lt.616.) call hf1(5046,esum,1.)
+      if(sqrt_efm.gt.616..and.sqrt_efm.lt.684.) call hf1(5047,esum,1.)
+      if(sqrt_efm.gt.412..and.sqrt_efm.lt.480.) call hf1(5048,esum,1.)
+c
+c     write(*,*)'gistogramming done'
+      IF (EFM.LE.0.) THEN
+        LOSSD(26) = LOSSD(26) + 1
+        ef=ef+1
+        RETURN
+      END IF
+c
+      EFMAS = SQRT(EFM)
+      efm=efm/1000
+      call hf1(20311,efm,1.)
+      if(npart.eq.2)then
+        call hf1(20100,esum,1.)
+        x=(egam(ipart(1))-egam(ipart(2)))/
+     &    (egam(ipart(1))+egam(ipart(2)))
+        call hf1(20101,x,1.)
+        x=abs(x)
+        call hf1(20109,x,1.)
+      endif
+      if(npart.eq.2.and.efmas.gt.100.and.efmas.lt.177)then
+        call hf1(20103,esum,1.)
+        do i=1,2
+          IP = IPART(I)
+          call hf1(20106,egam(ip),1.)
+        enddo
+        x=(egam(ipart(1))-egam(ipart(2)))/
+     &       (egam(ipart(1))+egam(ipart(2)))
+        call hf1(20104,x,1.)
+        x=abs(x)
+        call hf1(20110,x,1.)
+      endif
+
+      call hf1(20102,efmas,1.)
+c      if(efmas.ge.176.and.efmas.le.180)then
+c        write(*,*)'chetyreh-impulsy chastic'
+c        do i=1,npart
+c          ip=ipart(i)
+c          write(*,*)plab(1,ip),plab(1,ip),plab(1,ip),egam(ip)
+c        enddo
+c      endif
+      OK = .TRUE.
+C
+c      write(*,*)'efmass - done'
+      RETURN
+      END
+
+      subroutine minimas(ipart,np1,np2,mm)
+CEvd  Just a comment:
+C     This subroutine supposed to calculate mass 
+C     of gammas with indices np1 and np2 
+C     ipart is not used here
+      COMMON /GAMMAS/ NGAM, XGAM(60), YGAM(60), EGAM(60), DCOS(3,60)
+      COMMON /MOMENT/ pi0mass,PLAB(3,60)
+      DIMENSION IPART(60)
+      real es,px,py,pz,m1,mm
+c      write(*,*)'sdfh',np1,np2,ipart(np1),ipart(np2),ngam
+      es=egam(np1)+egam(np2)
+      px=plab(1,np1)+plab(1,np2)
+      py=plab(2,np1)+plab(2,np2)
+      pz=plab(3,np1)+plab(3,np2)
+c      write(*,*)'mm0.1',es,px,py,pz
+      m1=es*es-px*px-pz*pz-py*py
+c      write(*,*)'mm1',m1
+      if(m1.lt.0) then
+         mm=10000
+         return
+      endif
+      mm=sqrt(m1)
+      return
+      end
+
+      subroutine cos_in_f2(ef,xf,yf,zf,f2_mas,np1,np2,cosalfa)
+      COMMON /GAMMAS/ NGAM, XGAM(60), YGAM(60), EGAM(60), DCOS(3,60)
+      COMMON /MOMENT/ pi0mass,PLAB(3,60)
+      real es,px,py,pz,cosalfa
+      real ep,pxp,pyp,pzp,modp
+c-------chastica prost tak-------------------------------
+      es=egam(np1)+egam(np2)
+      px=plab(1,np1)+plab(1,np2)
+      py=plab(2,np1)+plab(2,np2)
+      pz=plab(3,np1)+plab(3,np2)
+c-------chastica v SCM f2--------------------------------
+c      write(*,*)f2_mas,ef
+      ep=(ef*es-(xf*px+yf*py+zf*pz))/f2_mas
+      pxp=px-xf*((es+ep)/(ef+f2_mas))
+      pyp=py-yf*((es+ep)/(ef+f2_mas))
+      pzp=pz-zf*((es+ep)/(ef+f2_mas))
+      modp=sqrt(pxp*pxp+pyp*pyp+pzp*pzp)
+c      write(*,*)modp
+      cosalfa=pzp/modp
+      return
+      end
+
+      subroutine t_and_missmass(npeak,key,ESUM,PXSUM,PYSUM,PZSUM)
+        integer npart,npeak,key
+        real ESUM,PXSUM,PYSUM,PZSUM
+        real momentbeam,energy,momentx,momenty,momentz
+        real t,missmass,mpart(2)
+        data mpart/139.57,493.677/
+CEvd+
+        common /t_missmass/ t,missmass
+        common /triggers/c1c2c3(3),c1min,c2min,c3min
+C
+        if((c1c2c3(1).gt.c1min).and.(c1c2c3(2).gt.c2min)) then 
+            npart=1    ! pi+ beam
+        else
+            npart=2    ! K+ beam
+        endif
+C
+        momentbeam = 7000.
+        energy  = sqrt(momentbeam**2 + mpart(npart)**2) - ESUM
+        momentx = PXSUM
+        momenty = PYSUM
+        momentz = momentbeam-PZSUM
+        t = energy**2 - momentx**2 - momenty**2 - momentz**2
+        energy = energy + 939.570         ! <-- + neutron mass
+        missmass=sqrt(energy**2 - momentx**2 - momenty**2 - momentz**2)
+        return
+      end
+C
+      SUBROUTINE ARTURS(PC,P0,PL)
+C...........................................................................
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DIMENSION PC(5),P0(5),PL(5)
+C
+      AM0 =  P0(5)
+      EL4 = (PC(4)*P0(4) + PC(3)*P0(3) + PC(2)*P0(2) + PC(1)*P0(1))/AM0
+      DO 10 I = 1,3
+   10 PL(I) = PC(I) + P0(I)*(EL4+PC(4))/(P0(4)+AM0)
+      PL(4) = EL4
+      RETURN
+      END

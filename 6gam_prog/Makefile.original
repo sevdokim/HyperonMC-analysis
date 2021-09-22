@@ -1,0 +1,63 @@
+#------------------------------------------------------------------------------
+TOP_DIR := ./
+
+############### PATH to include directories ##################################
+INCLUDE_DIRS := $(TOP_DIR) 
+
+############## SOURCE ########################################################
+source_dirs  := $(TOP_DIR)
+source_files := $(wildcard   $(addsuffix /*.cxx, $(source_dirs) ) )
+source_files += $(wildcard   $(addsuffix /*.f  , $(source_dirs) ) )
+
+############# binary ##########################################################
+object_files := $(notdir $(source_files) )
+object_files := $(object_files:.cxx=.o)
+object_files := $(object_files:.f=.o)
+
+#F77LIBS      := -L/usr/local/lib -lcrypt -lnsl
+F77LIBS      := -lz
+CERN_LIB     := `cernlib packlib,mathlib,kernlib`
+
+################ Compiler for C++ #############################################
+CXX          := g++
+
+OPT_DEB      := -g
+DEFINES      := -Dlong32="int" -Dlong64="long long" -DLINUX
+INCLUDES     := $(addprefix -I, $(INCLUDE_DIRS))
+
+CXXFLAGS     := $(OPT_DEB) -Wall  -fPIC 
+CXXFLAGS     += $(DEFINES) $(INCLUDES)
+
+################# compiler for Fortran ########################################
+F77		= gfortran
+
+F77FLAGS     := $(OPT_DEB) -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150 # -Wconversion -Wunused 
+F&&FLAGS     += -finit-local-zero -fbounds-check -fno-automatic 
+F77FLAGS     += $(INCLUDES)
+
+#------------------------------------------------------------------------------
+
+# compilation
+VPATH   := $(source_dirs)
+%.o: %.cxx
+	$(CXX) -c $(CXXFLAGS) $<
+%.o: %.f
+	$(F77) -c $(F77FLAGS) $<
+
+#------------------------------------------------------------------------------
+
+# main goal, i.e. name of executable
+
+all:	calibr.x8664
+
+# linking
+calibr.x8664: $(object_files)
+	$(CXX) $(CXXFLAGS)  \
+	$^ -o $@ $(F77LIBS) \
+	$(CERN_LIB)
+
+clean:
+	rm -rf ../Bin
+
+#Makes rule clean and then rule all
+rebuild: clean all

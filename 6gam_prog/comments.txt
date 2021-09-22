@@ -1,0 +1,7 @@
+1. Otbor po amplitude v event_decode_2005.f pri poiske clusterov:
+   luchshij otbor po omega    if(iampl.gt.2) then 
+
+2. Otbor v calibr2.f          IF (ESHW(1,I).LT.EMIN2.OR.ESHW(2,I).LT.-6.)
+   uluchshaet i pi0 i omg, no f2 -khuzhe
+
+3.

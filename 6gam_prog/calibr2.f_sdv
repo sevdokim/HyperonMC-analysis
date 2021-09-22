@@ -1,0 +1,476 @@
+      SUBROUTINE calibr(Esum,Efma,result_ok)
+C==============================================================
+C     for LGD2 calibration
+c     two gammas effective mass                              
+C     created  27.02.91  CGA                                   
+C                                                             
+C     LAST CORRECTION  NLR                            
+C                                 
+C==============================================================
+      COMMON /AMPW2 / ncellb,ncells,IWL2(576),IWLS(64)
+      COMMON /LUN   / lunin,lunout,LUNST
+      common /one23 / one(60)
+      COMMON /SHOWR / NCLUST,nclws,NCELLC(60),XSHW(3,60),
+     1                YSHW(3,60),ESHW(3,60),iamp_clus(60),DUM(60)
+      common /GAMMAS/ NGAM, XSH(60), YSH(60), ESH(60),DCOS(3,60)
+      common /MOMENT/ pi0mass, PLAB(3,60)
+      common /KINCUT/ emin2,angmax,efmin,efmax
+      common /PRFLAG/ NPREV,LPRINT
+      common /CALIB / NSTEP,NSTMAX,ratio(576)
+      COMMON /CLLIM / nclus,IXMN(60),IXMX(60),IYMN(60),IYMX(60)
+      COMMON /W2SET / NXW2,NYW2,NCELW2,XW2L,YW2D,DXCW1,DYCW2
+      COMMON /WSSET / NXWS,NYWS,NCELWS,XWSL,YWSD,DXCWS,DYCWS
+      COMMON /W2GEOM/ XNET2(25),YNET2(25),HALFX2,HALFY2
+      COMMON /WSGEOM/ XNETS(9),YNETS(9),HALFXS,HALFYS
+      COMMON /LOSSD / LOSSD(70)
+      COMMON /TARG  / XTARG,YTARG,ZTARG
+      COMMON /ZWALLS/ ZWALL1,ZWALL
+      real etot,qqq1,qqq2
+      integer iamptot
+      common /etotal/ etot,iamptot
+      integer nt,icon
+      COMMON /NTSTAT/ NT,icon
+      common /nttype/ nttype ! ntuple type: big - nttype=1, small - nttype=0
+      real effmass,ggangle
+      integer numpi0
+      logical result_ok,Center
+      common /twogmass/ numpi0,effmass(6),ggangle(6)
+      common /pi0sel/ npisel,selmass(2),selang(2)
+      common/eta0/etamass, etamin, etamax
+      common /minihi/ matrix(10,10), b(10), kkk,istep,alfa1(100)
+
+      DIMENSION IGAM(60),ICLU(60),ICL2(2)
+      DIMENSION ANGMIN(6),EPI0(6)
+      DIMENSION PSUM(4)
+cmike
+      dimension icl(2)
+cmike
+      LOGICAL   OK,LPRINT,IFPI0
+      real GlobalModifier                                               ! wtf ? ;kondr
+C     DATA XLEFT/-331.7/, XRIGHT/95.3/, YDOWN/-215.7/, YUP/211.3/
+
+c      write(*,*)'prishli v calibr'
+c      stop
+c
+      GlobalModifier=1.1765                                             ! wtf ? ;kondr
+      NGAM   = 0
+      npisel = 0
+      numpi0 = 0
+      result_ok = .true.;
+      call vzero(effmass,6)
+      call vzero(ggangle,6)
+      call vzero(selmass,2)
+      call vzero(selang,2)
+C ------------  Loop over clusters  ---------------------------
+      delz = ZWALL - ZTARG 
+      call hf1(20142,float(nclust),1.)
+      icsm=0
+      icbg=0
+C
+      DO 100 I = 1,NCLUST
+C
+C-    write(*,*) XSHW(1,I),YSHW(1,I),ESHW(1,I),ESHW(2,I)
+
+      IF (ESHW(1,I).LT.EMIN2.OR.ESHW(2,I).LT.-6.) GO TO 100
+CSdv- IF (ESHW(1,I).LT.EMIN2)                     GO TO 100
+c
+CSdv- IF (I.LE.NCLWS.AND.(IXMN(I).EQ.IXMX(I).OR.IYMN(I).EQ.IYMX(I)))
+CSdv-                                             GO TO 100
+C     if (i.gt.nclws.and.ixmn(i).eq.1) go to 100
+C
+        NGAM = NGAM + 1
+        one(ngam)=one(I)
+C-
+c        if(csingle.eq.1.)then
+c           do ii=1,64
+c           iiy=1+(ii-1)/8
+c           iix=ii-(iiy-1)*8
+c           if(scl(i,ii).eq.1.) then
+c              call hf2(5021,float(iix),float(iiy),1.)
+c              write(*,*)iix,iiy
+c              stop
+c           endif
+c           icsm=icsm+scl(i,ii)
+c           write(*,*)scl(i,ii)
+c           enddo
+c           do ii=1,576
+c           iiy=1+(ii-1)/24
+c           iix=ii-(iiy-1)*24
+c           if(bcl(i,ii).eq.1.) call hf2(5018,float(iix),float(iiy),1.)
+c           icbg=icbg+bcl(i,ii)
+c           write(*,*)bcl(i,ii)
+c           enddo
+c           write(*,*)icsm,icbg
+c           stop
+c        endif
+C-
+CSdv+   --- Coordinate correction 18.03.2018 ---
+C
+        XSHWcel = (XSHW(1,I) - XW2L)/DXCW1
+        YSHWcel = (YSHW(1,I) - YW2D)/DYCW2
+        IXX     = XSHWcel
+        IYY     = YSHWcel
+C
+        Center = XSHWcel.gt.10..and.XSHWcel.lt.14.
+        Center = YSHWcel.gt.10..and.YSHWcel.lt.14..and.Center
+C
+        IF (.NOT.Center) THEN
+C
+             XSHWabs = abs(XSHWcel)
+             XSHWabs = XSIH1(XSHWabs)
+	     if (XSHWcel.lt.0.) XSHWabs =-XSHWabs
+C	  
+	     YSHWabs = abs(YSHWcel)
+	     YSHWabs = XSIH1(YSHWabs)
+	     if (YSHWcel.lt.0.) YSHWabs =-YSHWabs
+C	
+C-	     XSHWcel = XSHWabs*DXCW1 + XW2L
+C-  	     YSHWcel = YSHWabs*DYCW2 + YW2D
+C
+             XSHWcel = XSHWabs
+	     YSHWcel = YSHWabs
+C
+	XSHW(1,I) = XSHWabs*DXCW1 + XW2L
+	YSHW(1,I) = YSHWabs*DYCW2 + YW2D
+	ENDIF
+C	
+        tangenx =(XSHW(1,I) - XTARG)/delz
+        tangeny =(YSHW(1,I) - YTARG)/delz
+        alfx = atan(tangenx)
+        alfy = atan(tangeny)
+CSdv-	
+C-      write(*,*) 'XTARG,YTARG=',XTARG,YTARG
+CSdv- 
+        DELX = 14.*TANH(21.6*ABS(ALFX) - .9) + 10.03    !   +10.5 ==> +10.03
+        DELY = 14.*TANH(21.6*ABS(ALFY) - .9) + 10.03    !   +10.5 ==> +10.03.
+        IF (ALFX.LT.0.) DELX = -DELX
+        IF (ALFY.LT.0.) DELY = -DELY
+CSdv-
+        call new_egam(ESHW(1,I))
+         ESH(NGAM)  = ESHW(1,I)
+         XSH(NGAM)  = XSHW(1,I) - DELX
+         YSH(NGAM)  = YSHW(1,I) - DELY
+C
+C-       XSH(NGAM)  = XSHW(1,I)
+C-       YSH(NGAM)  = YSHW(1,I)
+         ICLU(NGAM) = I
+C
+CSdv+
+C
+	CALL HF1(30011,XSHWcel,1.)
+	CALL HF1(30012,YSHWcel,1.)
+
+        IF(ESHW(1,I).gt.1000.) then
+	                CALL HF1(30021,XSHWcel,1.)
+	                CALL HF1(30022,YSHWcel,1.)
+C
+	   if (IXMN(I).ne.IXMX(I)) then
+	                  CALL HF1(30031,XSHWcel,1.)
+	       IF(Center) THEN
+	                  CALL HF1(30041,XSHWcel,1.)
+			  ELSE
+			  CALL HF1(30051,XSHWcel,1.)
+			  CALL HF1(30053,abs(XSHWcel-12.),1.)
+		          ENDIF  
+C
+	            IXX = XSHWcel
+		    CALL HF1(30061,XSHWcel-IXX,1.)
+                    IF(Center) THEN
+	                  CALL HF1(30071,XSHWcel-IXX,1.)
+			  ELSE
+			  CALL HF1(30081,XSHWcel-IXX,1.)
+		          ENDIF  
+		    endif
+C
+	   if (IYMN(I).ne.IYMX(I)) then
+	                  CALL HF1(30032,YSHWcel,1.)
+	       IF(Center) THEN
+	                  CALL HF1(30042,YSHWcel,1.)
+			  ELSE
+			  CALL HF1(30052,YSHWcel,1.)
+			  CALL HF1(30054,abs(YSHWcel-12.),1.)
+		          ENDIF  
+C
+		    IYY = YSHWcel 
+		    CALL HF1(30062,YSHWcel-IYY,1.)
+                    IF(Center) THEN
+	                  CALL HF1(30072,YSHWcel-IYY,1.)
+			  ELSE
+			  CALL HF1(30082,YSHWcel-IYY,1.)
+		          ENDIF  
+		    endif
+        ENDIF  
+
+100   CONTINUE
+
+      if (nt.eq.0) CALL HF1(20140,FLOAT(NGAM),1.)
+c
+c      write(*,*)'end loop over clusters, ngam=',ngam
+c      stop
+c
+C---- END OF BIG LOOP -------------------------------------
+c
+      if (ngam.eq.1) then 
+          call hf1(30000,esh(1),1.)
+CEvd+
+C          if(abs(xsh(1)).lt.250.and.abs(ysh(1)).lt.250.0) 
+C     *         call hf1(-30000,esh(1),1.)
+C	  
+C      do k=1,576
+C          if(IWL2(k).gt.50.and.IWL2(k).lt.5000) 
+C     +                           call hf1(6000,float(k),1.)
+C       enddo
+c   
+c-       do i=2,5
+c-       qqq1=(i-1)*100
+c-       if(esh(1).lt.qqq1) then
+c-         call hf2(30000+i,XSH(1),YSH(1),1.)
+c-       endif
+c-       enddo
+c
+        call hf2(30006,XSH(1)-XTARG,YSH(1)-YTARG,1.)
+      endif
+C
+CSdv-   Showers 
+C
+Cprnt-      write(*,*) 'NGAM=',NGAM
+C-      do j =1,NGAM
+C-      write(*,*) j,XSH(J)-XTARG,YSH(J)-YTARG,ESH(J)
+C-    if (abs(XSH(J)-XTARG).lt.171.and.abs(YSH(J)-YTARG).lt.171.)
+C-   +           write(*,*) j,XSH(J)-XTARG,YSH(J)-YTARG,ESH(J)
+C-      enddo     
+C-      write(*,*) 'New event' 
+C-      write(*,*)
+C-      if (NGAM.eq.3) stop'NGAM=3'
+      
+C             --- The final gamma coordinates and momentums ---             
+      CALL COSDIR
+      DO 101 J = 1, NGAM
+         XSH(J)  =  XSH(J)-XTARG
+         YSH(J)  =  YSH(J)-YTARG
+C--
+C         IF(ESH(J).gt.1000.) THEN
+C	    RSH = sqrt(XSH(J)**2+YSH(J)**2)
+C	    CALL HF1(30040,RSH,1.)
+C	    CALL HF1(30041,XSH(J)/85.5,1.)
+C	    CALL HF1(30042,YSH(J)/85.0,1.)
+C
+C	    Icls = ICLU(J)
+C	    if (IXMN(Icls).ne.IXMX(Icls)) then
+C	                   CALL HF1(30051,XSHW(1,Icls)/85.5,1.)
+C		       endif
+C		       
+C	    if (IYMN(Icls).ne.IYMX(Icls)) then
+C	                   CALL HF1(30052,YSHW(1,Icls)/85.0,1.)
+C		       endif    	    
+C	 ENDIF
+C--	 
+      DO 101 I = 1, 3
+         PLAB(I,J)= ESH(J)*DCOS(I,J)
+  101 CONTINUE
+c
+CSdv+
+      PSUM(1)=0.0 ; PSUM(2)=0.0
+c
+      do J=1,NGAM
+      PSUM(1) = PSUM(1) + PLAB(1,J)
+      PSUM(2) = PSUM(2) + PLAB(2,J)
+      enddo
+c
+      Pt = sqrt(PSUM(1)**2+PSUM(2)**2)
+C-    write(*,*) 'Pt=',NGAM,Pt
+C-    if (Pt.eq.0.) write(*,*) pt,PSUM(1),PSUM(2)
+C-    if (Pt.lt.100.) then
+C-                    result_ok = .false.
+C-		      go to 999
+C-		endif
+CSdv-
+C-    write(*,*) 'NGAM=',NGAM,(ICLU(k),k=1,NGAM)
+C
+      IF (NGAM.LT.2) goto 999
+c
+c ---  A case with 2 gamma ---------------------------
+c
+      IF (NGAM.EQ.2) THEN
+         IGAM(1) = 1
+         IGAM(2) = 2
+         CALL EFMASS(2,IGAM,EFMA,Esum,OK)
+!          if (.not.ok) result_ok = .false.                               ! ;kondr
+         IF (.NOT.OK) GOTO 999
+c	 
+         CALL ANGLE(1,2,COS2G,ANG2G)
+         if (nt.eq.0) then
+           CALL HF1(20230+NSTEP,EFMA,1.)
+           CALL HF1(20240+NSTEP,ANG2G,1.)
+           if(one(1).eq.1.or.one(2).eq.1) call hf1(20232,efma,1.)
+           if(one(1).eq.2.or.one(2).eq.2) call hf1(20233,efma,1.)
+           if(one(1).eq.3.or.one(2).eq.3) call hf1(20234,efma,1.)
+         else
+            numpi0 = 1
+            effmass(1) = efma
+            ggangle(1) = ang2g
+         endif
+         angmin(1) = 2.*pi0mass/(esh(1)+esh(2))*.7
+c--------------calibrovka na eta-meson-----------------
+c         if (efma.gt.etamin.and.efma.lt.etamax)then
+c            icl2(1)=iclu(1)
+c            icl2(2)=iclu(2)
+c            call fill_eta(icl2,efma)
+c         endif
+c--------------calibrovka na pi0-----------------------
+         IFPI0 = EFMA.GT.EFMIN.AND.EFMA.LT.EFMAX
+c--------------zapolnenie matrici dlia popravki energii-----
+         if(ifpi0)then
+            call hf1(20312,esum,1.)
+CSdv-          if(esum.ge.1000.) then             !  epl54.dat and less
+               if(esum.ge.1500.) then 
+               call matr_ent(esh,1)
+               CALL HF1(20281,EFMA  ,1.)
+               CALL HF1(20282,esh(1),1.)
+               CALL HF1(20282,esh(2),1.)
+            endif
+         endif
+c         if(((EFMA.gt.pi0mass-(EFMAX-EFMIN).and.EFMA.le.EFMIN).or.
+c     &       (EFMA.lt.pi0mass+(EFMAX-EFMIN).and.EFMA.ge.EFMAX)).and.
+c     &        esum.ge.1500.) then 
+c            call hf1(20312,esum,1.)
+c           CALL HF1(20281,EFMA  ,1.)
+c           call matr_ent(esh,-1)
+c         endif
+c-----------------------------------------------------------
+cmike
+      ICL(1) = ICLU(1)
+      ICL(2) = ICLU(2)
+      if(esum.gt.1000.)      CALL NEW_CLB(ICL,EFMA)
+cmike
+         IFPI0 = ifpi0.and.ANG2G.GT.angmin(1).AND.ANG2G.LT.ANGMAX
+         IF (.NOT.IFPI0) LOSSD(39) = LOSSD(39) + 1
+         IF (.NOT.IFPI0) GOTO 999
+            ICL2(1) = ICLU(1)
+            ICL2(2) = ICLU(2)
+c            call hf1(20312,esum,1.)
+c            if(esum.ge.1000.) then
+c               call matr_ent(esh)
+c               CALL HF1(20281,EFMA,1.)
+c            endif
+            CALL FILLING(ICL2,EFMA)
+            if (nt.eq.0) then
+              CALL HF1(20280+NSTEP,EFMA,1.)
+            else
+              npisel = 1
+              selmass(1) = efma
+              selang(1)  = ang2g
+              if (nttype.eq.0) call hfnt(333)
+            endif
+      ENDIF
+c
+c --- A case with 3 gamma ---------------------------
+c
+      IF (ngam.eq.3) THEN
+        do i=1,3
+           igam(i)=i
+        enddo
+        CALL EFMASS(3,IGAM,EFMA,Esum,OK)
+        IF (.NOT.OK) GO TO 999
+        call hf1(20231,efma,1.)
+      ENDIF
+c
+c --- A case with 4+ gamma --------------------------
+c
+      if(ngam.gt.3)then
+        do i=1,ngam
+           igam(i)=i
+        enddo
+        call efmass(ngam,igam,efma,Esum,ok)
+        if(.not.ok) go to 999
+      endif
+C
+  999 if (nttype.eq.1) call hfnt(333)
+      if (.not.ok) result_ok = .false.;
+c      write(*,*)'calibr done'
+cmike
+c-      do i = 1,64
+c-        if(IWLS(i).ne.0) call hf1(-20000-i,   real(IWLS(i)),1.)
+c-      enddo
+c-      do i = 1,576
+c-        if(IWL2(i).ne.0) call hf1(-20000-i-64,real(IWL2(i)),1.)
+c-      enddo
+cmike
+      RETURN
+      END
+C
+      function XSIH1(x)
+      dimension par(5)
+C      
+      ix = x
+      dx = x-ix
+C     
+      xx = ix+0.5
+      par(3) = 5.7771  + 0.034917*xx
+C!-   par(4) = 0.29790 + 0.988480*xx
+      par(4) = 0.29790 + 1.000000*xx 
+C-      
+      xc = x
+      if (dx.lt.0.5) xc = 2*ix+1.-x
+C
+      fsih2 = sinh(par(3)*(xc-par(4)))/par(3) 
+      fsih0 = sinh(par(3)*(xx-par(4)))/par(3)
+      fsih5 = sinh(par(3)*(xx+0.5-par(4)))/par(3)
+      
+      fsih2 = fsih2 - fsih0
+C
+      if (dx.gt.0.5) then 
+                     fsih2 = fsih2 - fsih0 + fsih5
+	     else
+	     fsih2 =-fsih2 - fsih0 + fsih5
+      endif
+C         
+      xsih1 = 0.5*fsih2/(-fsih0+fsih5)+ix
+      return
+      end
+C
+      function XSIH2(x)
+      dimension par(5)
+C      
+      ix = x
+      dx = x-ix
+C      
+      if(dx.lt.0.5) then
+            xx = ix
+	    par(3) = 5.2043  + 0.80535*xx  - 0.032510*xx**2 
+C!-	    par(4) = 0.21340 + 1.0067*xx
+            par(4) = 0.21340 + 1.0000*xx
+	    if (par(3).lt.5.7771) par(3) = 5.7771
+C
+C-	    write(*,*) ix,xx,par(3),par(4)
+	    else
+            xx = ix+0.5
+	    par(3) = 5.7771  + 0.034917*xx
+C!-	    par(4) = 0.29790 + 0.988480*xx
+            par(4) = 0.29790 + 1.000000*xx
+C-	    write(*,*) ix,xx,par(3),par(4)
+      endif
+C-      
+      fsih2 = sinh(par(3)*(x -par(4)))/par(3) 
+      fsih0 = sinh(par(3)*(xx-par(4)))/par(3)
+      fsih5 = sinh(par(3)*(xx+0.5-par(4)))/par(3)
+      fsih2 = fsih2 - fsih0
+      if (dx.gt.0.5) fsih2 = fsih2 - fsih0 + fsih5 
+C         
+      xsih2 = 0.5*fsih2/(-fsih0+fsih5)+ix
+      return
+      end
+C
+      function fsih(x)
+C     Sdv 18.03.2018: Coordinate correction in LGD2 
+C                     for not central clusters 
+C
+      par3 =  7.69255
+      if(x.lt.0.5) then
+	   fsih = 1./par3*sinh(par3*(x-0.25))+0.437
+	   else
+	   fsih = 1./par3*sinh(par3*(x-0.75))+1.311
+      endif
+      fsih =  fsih/1.75
+      return
+      end

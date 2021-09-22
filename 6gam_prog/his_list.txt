@@ -1,0 +1,474 @@
+booking.f:            CALL HROPEN(lunst,'hyperon','calibr.hbook','N',1024,IOSTAT)
+booking.f:            CALL HROPEN(lunst,'hyperon','calibr.hbook','U',1024,IOSTAT)
+event_decode_2005.f:c that initite all (hbook, etc) 
+hb_cherenkovs.f:!           call hbook1(5101,
+hb_cherenkovs.f:!           call hbook1(5102,
+hb_cherenkovs.f:!           call hbook1(5103,
+hb_cherenkovs.f:!           call hbook1(-5191,
+hb_cherenkovs.f:!           call hbook1(-5192,
+hb_cherenkovs.f:!           call hbook1(-5193,
+hb_cherenkovs.f:!           call hbook1(-5101,'C1([p])-C2(K);ADC counts;Events;',
+hb_cherenkovs.f:!           call hbook1(-5102,'C1([p])-C3([p]);ADC counts;Events;',
+hb_cherenkovs.f:!           call hbook1(-5103,'C2(K)-C3([p]);ADC counts;Events;',
+hb_cherenkovs.f:!           call hbook1(-5104,
+hb_cherenkovs.f:!           call hbook1(-5105,
+hb_cherenkovs.f:!           call hbook1(-5106,
+hb_cherenkovs.f:!           call hbook1(-5111,
+hb_cherenkovs.f:!           call hbook1(-5112,
+hb_cherenkovs.f:!           call hbook1(-5113,
+hb_cherenkovs.f:!           call hbook1(-5114,
+hb_cherenkovs.f:!           call hbook1(-5121,
+hb_cherenkovs.f:!           call hbook1(-5122,
+hb_cherenkovs.f:!           call hbook1(-5123,
+hb_cherenkovs.f:!           call hbook1(-5124,
+hb_cherenkovs.f:!           call hbook1(-5131,
+hb_cherenkovs.f:!           call hbook1(-5132,
+hb_cherenkovs.f:!           call hbook1(-5133,
+hb_cherenkovs.f:!           call hbook1(-5134,
+hb_cherenkovs.f:!           call hbook2(5112,
+hb_cherenkovs.f:!           call hbook2(5113,
+hb_cherenkovs.f:!           call hbook2(5123,
+hb_cherenkovs.f:!           call hbook2(5912,
+hb_cherenkovs.f:!           call hbook2(5913,
+hb_cherenkovs.f:!           call hbook2(5923,
+hb_cherenkovs.f:          call hbook2(5991,
+hb_cherenkovs.f:          call hbook2(5992,
+hb_cherenkovs.f:          call hbook2(5993,
+hb_cherenkovs.f:!           call hbook1(-5991,
+hb_cherenkovs.f:!           call hbook1(-5992,
+hb_cherenkovs.f:!           call hbook1(-5993,
+hb_cherenkovs.f:!           call hbook2(5994,
+hb_cherenkovs.f:!           call hbook2(5995,
+hb_cherenkovs.f:!           call hbook2(5996,
+hb_cherenkovs.f:!           call hbook1(-5994,
+hb_cherenkovs.f:!           call hbook1(-5995,
+hb_cherenkovs.f:!           call hbook1(-5996,
+hb_cherenkovs.f:          call hbook1(5870,
+hb_cherenkovs.f:          call hbook1(5880,
+hb_cherenkovs.f:          call hbook1(5871,
+hb_cherenkovs.f:          call hbook1(5881,
+hb_cherenkovs.f:          call hbook1(5872,
+hb_cherenkovs.f:          call hbook1(5882,
+hb_cherenkovs.f:         call hbook1(5873,
+hb_cherenkovs.f:         call hbook1(5883,
+hb_cherenkovs.f:         call hbook1(5874,
+hb_cherenkovs.f:         call hbook1(5884,
+hb_cherenkovs.f:         call hbook1(5875,
+hb_cherenkovs.f:         call hbook1(5885,
+hb_cherenkovs.f:      call hbook1(5800,'c1,c2,c3 > threshhold & c1,c2,c3 > 0',10,0,10,0)
+hb_cherenkovs.f:      call hbook1(5801,'c1 all', 2000,0,2000,0)
+hb_cherenkovs.f:      call hbook1(5802,'c2 all', 2000,0,2000,0)
+hb_cherenkovs.f:      call hbook1(5803,'c3 all', 2000,0,2000,0)
+hb_cherenkovs.f:      call hbook1(5810,'pi+, k+, p+',5,0,5,0)
+hb_cherenkovs.f:      call hbook1(5820,h_name,5,0,5,0) 
+hb_cherenkovs.f:        call hbook1(5820+i,h_name,2000,0,2000,0) 
+hb_cherenkovs.f:        call hbook1(5720+i,h_name,2000,0,2000,0) 
+hb_cherenkovs.f:        call hbook1(5620+i,h_name,2000,0,2000,0) 
+hist_book_2004.f:          call hbook1(700,'Hits number',640,0.,640.,0.)
+hist_book_2004.f:          call hbook1(5014,'claster length',15,0.,15.,0.)
+hist_book_2004.f:          call hbook1(5015,'statistika 2',1000,0.,1000.,0.)
+hist_book_2004.f:          call hbook2(5016,'map 1',24,0.5,24.5,
+hist_book_2004.f:          call hbook2(5017,'map only bad',24,0.5,24.5,
+hist_book_2004.f:          call hbook2(5018,'map with one bad',24,0.5,24.5,
+hist_book_2004.f:          call hbook2(5019,'map 1 small',8,0.5,8.5,
+hist_book_2004.f:          call hbook2(5020,'map small only bad',8,0.5,8.5,
+hist_book_2004.f:          call hbook2(5021,'map small with one bad',8,0.5,8.5,
+hist_book_2004.f:          call hbook1(5101,'c1',4000,0.,4000.,0.)
+hist_book_2004.f:          call hbook1(5102,'c2',4000,0.,4000.,0.)
+hist_book_2004.f:          call hbook1(5103,'c3',4000,0.,4000.,0.)
+hist_book_2004.f:c          call hbook1(5104,'c4',200,0.,200.,0.)
+hist_book_2004.f:             call hbook1(5200+i,'hard 1280+i adc',4000,0.,4000.,0.)
+hist_book_2004.f:          call hbook1(5105,'pile-up discriminator (M4 in the past)'
+hist_book_2004.f:          call hbook1(5106,'pile-up discriminator (M4 in future)'
+hist_book_2004.f:                call hbook1(id,title2,200,0.,400.,0.)     !  ; they were empty ; kondr
+hist_book_2004.f:                call hbook1(id,title3,2000,0.,4000.,0.)   !  ; they were empty ; kondr
+hist_book_2004.f:          call hbook1(20121,'Total amplitude by event',
+hist_book_2004.f:          call hbook1(20120,'Total energy by event',
+hist_book_2004.f:          call hbook1(20115,'Cluster structure, big cells',
+hist_book_2004.f:          call hbook1(20116,'Cluster structure, small cells',
+hist_book_2004.f:          call hbook1(20130,'Gammas energy',100,0.,5000.,0.)
+hist_book_2004.f:          call hbook1(20140,'Gammas multiplicity',30,0.,30.,0.)
+hist_book_2004.f:          call hbook1(20141,'all Gammas multiplicity' ,100,0.,100.,0.)
+hist_book_2004.f:          call hbook1(20142,'all Gammas multiplicity2',100,0.,100.,0.)
+hist_book_2004.f:         call hbook1(20230,'Effective masses (2g events)',
+hist_book_2004.f:          call hbook1(20232,'(2g events) centr',
+hist_book_2004.f:          call hbook1(20233,'(2g events) kray',
+hist_book_2004.f:          call hbook1(20234,'(2g events) centr+kray',
+hist_book_2004.f:          call hbook1(20231,'Effective masses (3g events)',
+hist_book_2004.f:          call hbook1(20240,'Angle between gammas (2g events)',
+hist_book_2004.f:          call hbook1(20250,'Effective masses (4g events)',
+hist_book_2004.f:          call hbook1(20260,'Angle between gammas (4g events)',
+hist_book_2004.f:          call hbook1(20270,'Effective masses, selected (4g events)',
+hist_book_2004.f:          call hbook1(20280,'Effective masses, selected (all events)',
+hist_book_2004.f:          call hbook1(20281,'Effective masses, selected ( >1500MeV)',
+hist_book_2004.f:          call hbook1(20282,'E gamma, selected (.gt.1500MeV)',
+hist_book_2004.f:          call hbook1(20283,'1/sigmaq, selected (.gt.1500MeV)',
+hist_book_2004.f:          call hbook1(20284,'1/(sigmaq+C), selected (.gt.1500MeV)',
+hist_book_2004.f:          call hbook1(20290,'E single gamma',500,500.,20000.,0.)
+hist_book_2004.f:          call hbook1(20300,'E1+E2',500,0.,20000.,0.)
+hist_book_2004.f:          call hbook1(20301,'(E1-E2)/(E1+E2)',500,-1.,1.,0.)
+hist_book_2004.f:          call hbook1(20302,'Effmass',500,0.,2000.,0.)
+hist_book_2004.f:          call hbook1(20303,'E1+E2 (p0)',500,0.,20000.,0.)
+hist_book_2004.f:          call hbook1(20304,'(E1-E2)/(E1+E2) (p0)',500,-1.,1.,0.)
+hist_book_2004.f:          call hbook1(20305,'E1 & E2',500,0.,20000.,0.)
+hist_book_2004.f:          call hbook1(20306,'E1 & E2 (p0)',500,0.,20000.,0.)
+hist_book_2004.f:          call hbook1(20307,'X1 & X2',500,-0.025,0.075,0.)
+hist_book_2004.f:          call hbook1(20308,'Y1 & Y2',500,-0.025,0.075,0.)
+hist_book_2004.f:          call hbook1(20309,'abs((E1-E2)/(E1+E2))',100,0.,1.,0.)
+hist_book_2004.f:          call hbook1(20310,'abs((E1-E2)/(E1+E2)) (p0)',100,0.,1.,0.)
+hist_book_2004.f:          call hbook1(20311,'Effmass**2',500,0.,5000.,0.)
+hist_book_2004.f:          call hbook1(20312,'E1+E2',500,0.,20000.,0.)
+hist_book_2004.f:c      call hbook1(30100,'3g kombinatorika',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30109,'abs((E1-E2)/(E1+E2)), 3g',100,0.,1.,0.)
+hist_book_2004.f:c      call hbook1(30110,'4g kombinatorika',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30119,'abs((E1-E2)/(E1+E2)), 4g',100,0.,1.,0.)
+hist_book_2004.f:c      call hbook1(30120,'5g kombinatorika',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30129,'abs((E1-E2)/(E1+E2)), 5g',100,0.,1.,0.)
+hist_book_2004.f:c      call hbook1(30130,'6g kombinatorika',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30139,'abs((E1-E2)/(E1+E2)), 6g',100,0.,1.,0.)
+hist_book_2004.f:c      call hbook1(30200,'3g - pi0',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30210,'4g - pi0',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30220,'5g - pi0',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30230,'6g - pi0',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30300,'4g - pi0+pi0',500,0.,2000.,0.)
+hist_book_2004.f:c      call hbook1(30400,'4g - dopolnenie k pi0',500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(20290+i,a32,500,500.,20000.,0.)
+hist_book_2004.f:c        call hbook1(20400+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(20500+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c          call hbook1(20600+i,a32,100,0.,1.,0.)
+hist_book_2004.f:c        call hbook1(20510+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(30100+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c          call hbook1(20610+i,a32,100,0.,1.,0.)
+hist_book_2004.f:c        call hbook1(30200+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(20520+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(30110+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c          call hbook1(20620+i,a32,100,0.,1.,0.)
+hist_book_2004.f:c        call hbook1(30210+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(30410+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(30300+i,a32,200,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(20530+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c          call hbook1(20630+i,a32,100,0.,1.,0.)
+hist_book_2004.f:c        call hbook1(30420+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(30220+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(30310+i,a32,200,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(20540+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:c        call hbook1(30230+i,a32,500,0.,2000.,0.)
+hist_book_2004.f:         call hbook2(-30001,'XY of all gammas',480,-1026.
+hist_book_2004.f:         call hbook2(-30002,'XY of all gammas, cluSize X,Y > 1',480,
+hist_book_2004.f:         call hbook1(-30003,'X of all gammas, cluSize X > 1',
+hist_book_2004.f:         call hbook1(-30004,'Y of all gammas, cluSize Y > 1',
+hist_book_2004.f:         call hbook1(-30005,'cluster size along X',20,0.,20.,0.)
+hist_book_2004.f:         call hbook1(-30006,'cluster size along Y',20,0.,20.,0.)
+hist_book_2004.f:         call hbook1(30000,'1g events, energy',500,0.,15000.,0.)
+hist_book_2004.f:         call hbook1(-30000,'E, MeV  1g |x,y|"L#25 cm',500,0.,15000.,0.)
+hist_book_2004.f:         call hbook2(30000+j,'1g events, XY E .lt. jx100',48,-1026.
+hist_book_2004.f:         call hbook2(30006,'1g events, XY',48,-1026.
+hist_book_2004.f:          call hbook1(30000+(i-1)*100+j,a32,500,0.,15000.,0.)
+hist_book_2004.f:          call hbook1(30010+(i-1)*100+j,a32,500,0.,15000.,0.)
+hist_book_2004.f:          call hbook1(30020+(i-1)*100+j,a32,2000,0.,2000.,0.)
+hist_book_2004.f:          call hbook1(32020+(i-1)*100+j,a32,500,0.,2000.,0.)
+hist_book_2004.f:          call hbook1(30030+(i-1)*100+j,a32,1000,0.,2000.,0.)
+hist_book_2004.f:          call hbook1(30040+(i-1)*100+j,a32,100,0.,1.1,0.)
+hist_book_2004.f:          call hbook1(32040+(i-1)*100+j,a32,100,0.,1.1,0.)
+hist_book_2004.f:          call hbook1(30050+(i-1)*100+j,a32,1000,0.,2000.,0.)
+hist_book_2004.f:          call hbook1(30060+(i-1)*100+j,a32,1000,0.,2000.,0.)
+hist_book_2004.f:          call hbook1(30070+(i-1)*100+j,a32,1000,0.,2000.,0.)
+hist_book_2004.f:          call hbook1(30080+(i-1)*100+j,a32,500,0.,15000.,0.)
+hist_book_2004.f:          call hbook1(30090+(i-1)*100+j,a32,100,0.,1.1,0.)
+hist_book_2004.f:        call hbook1(-30230-j,a32,1000,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31090+j,a32,200,0.,.4,0.)
+hist_book_2004.f:        call hbook1(31190+j,a32,200,0.,.4,0.)
+hist_book_2004.f:        call hbook1(31000+j,a32,200,0.,1.1,0.)
+hist_book_2004.f:        call hbook1(31500+j,a32,2000,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31510+j,a32,2000,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31520+j,a32,2000,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(-31500-j,a32,2000,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(-31510-j,a32,2000,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(-31520-j,a32,2000,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31530+j,a32,500,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31540+j,a32,500,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31550+j,a32,500,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31560+j,a32,500,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31570+j,a32,500,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(31580+j,a32,500,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(30130+j,a32,2000,0.,2000.,0.)
+hist_book_2004.f:          call hbook1(20601,'(E1+E2)/(E1*E2) (1000-3000)',
+hist_book_2004.f:          call hbook1(20602,'(E1+E2)/(E1*E2) (3000-5000)',
+hist_book_2004.f:          call hbook1(20603,'(E1+E2)/(E1*E2) (5000-7000)',
+hist_book_2004.f:          call hbook1(20604,'(E1+E2)/(E1*E2) (7000-9000)',
+hist_book_2004.f:c-          call hbook2(20700,'M vs (E1+E2)/(E1*E2)',
+hist_book_2004.f:c-          call hbook2(20701,'M vs M*(E1+E2)/(E1*E2)',
+hist_book_2004.f:          call hbook1(20702,'M*(E1+E2)/(E1*E2)',
+hist_book_2004.f:        call hbook2(5001,'fotony ot pi0',48,-1026.,1026.,
+hist_book_2004.f:        call hbook2(-5002,'fotony ot eta (Mike)',48,-1026.,1026.,
+hist_book_2004.f:        call hbook2(-5004,'m(pi0) vs r(x,y)',70,0.,1400.,
+hist_book_2004.f:        call hbook2(-5005,'m(eta) vs r(x,y)',70,0.,1400.,
+hist_book_2004.f:         call hbook2(-5006,'E vs r for pi0 photons',72,0.,14400.,
+hist_book_2004.f:        call hbook2(5011,'koordinaty pi0',60,-1200.,1200.,
+hist_book_2004.f:        call hbook1(5012,'x dlia pi0',100,-1200.,1200.,0.)
+hist_book_2004.f:        call hbook1(5013,'y dlia pi0',100,-1200.,1200.,0.)
+hist_book_2004.f:        call hbook2(5002,'zaselennost big"G#10',24,0.5,24.5,
+hist_book_2004.f:        call hbook2(5003,'zaselennost small"G#10',8,0.5,8.5,
+hist_book_2004.f:        call hbook2(5022,'zaselennost big"G#10,"L#500',24,0.5,24.5,
+hist_book_2004.f:        call hbook2(5023,'zaselennost small"G#10, "L#500',8,0.5,8.5,
+hist_book_2004.f:        call hbook2(5052,'zaselennost big"L#1500',24,0.5,24.5,
+hist_book_2004.f:        call hbook2(5053,'zaselennost small"L#1500',8,0.5,8.5,
+hist_book_2004.f:        call hbook2(5062,'zaselennost big"G#1500',24,0.5,24.5,
+hist_book_2004.f:        call hbook2(5063,'zaselennost small"G#1500',8,0.5,8.5,
+hist_book_2004.f:        call hbook1(5004,'dlina sobytiya',125,0.,250.,0.)
+hist_book_2004.f:        call hbook1(5005,'zhelezniy adres',864,1920.,2784.,0.)
+hist_book_2004.f:        call hbook1(5006,'amplituda v iacheyke',4096,0.,4096.,0.)
+hist_book_2004.f:        call hbook1(5007,'summa amplitud"G#10',1024,0.,4096.,0.)
+hist_book_2004.f:        call hbook1(5008,'summa amplitud"G#20',1024,0.,4096.,0.)
+hist_book_2004.f:        call hbook1(5009,'zhelezniy adres, 10"L#A"L#250'
+hist_book_2004.f:        call hbook1(5059,'zhelezniy adres,    A"L#250'
+hist_book_2004.f:        call hbook1(5031,'energiya v iacheyke',2048,0.,4096.,0.)
+hist_book_2004.f:        call hbook1(5032,'summa energiy fotonov',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5033,'energiya fotonov',500,0.,15000.,0.)
+hist_book_2004.f:        call hbook1(5034,'chislo fotonov',10,0.5,10.5,0.)
+hist_book_2004.f:        call hbook1(5035,'summa energy',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5036,'summa energy Ampl  OK     ',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5037,'summa energy Wall2 OK     ',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5038,'summa energy Wall2 NotOK=0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5039,'summa energy Wall2 NotOK=1',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5040,'summa energy Wall2 NotOK=2',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5041,'summa energy Wall2 NotOK=3',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5042,'summa energy Wall2 NotOK=4',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5043,'energy pi0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5044,'energia sprava ot pi0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5045,'energia sleva ot pi0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5046,'energy eta0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5047,'energia sprava ot eta0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5048,'energia sleva ot eta0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5049,'energy omega0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5050,'energia sprava ot omega0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5051,'energia sleva ot omega0',500,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(5054,'Proton energy',1500,0.,3000.,0.)
+hist_book_2004.f:        call hbook1(5055,'Gamma energy+proton energy',9999,0.,20000.,0.)
+hist_book_2004.f:        call hbook1(6000,'1g, Wall2 channels ',600,0.,600.,0.) 
+hist_book_2004.f:c      call hbook2(-12000,'x,y ',50,-1200.,1100.,50,-1200.,1100.,0.)
+hist_book_2004.f:      call hbook2(-12001,'mass'       ,50,0.,25.,50,0.,25.,0.)
+hist_book_2004.f:      call hbook2(-12002,'good masses',50,0.,25.,50,0.,25.,0.)
+hist_book_2004.f:      call hbook2(-12003,'nsb masses' ,50,0.,25.,50,0.,25.,0.)
+hist_book_2004.f:      call hbook2(-12004,'bad masses' ,50,0.,25.,50,0.,25.,0.)
+hist_book_2004.f:          call hbook1(-10000-i,'eff. mass in cell I',500 ,0.,500. ,0.)
+hist_book_2004.f:          call hbook1(-20000-i,   'energy in cell I',2048,0.,4096.,0.)
+hist_book_2004.f:        call hbook1(-11000,'eff. mass in every cell',500,0.,500.,0.)
+hist_book_2004.f:        call hbook1(-11001,'mass' ,299,1.,300.,0.)
+hist_book_2004.f:        call hbook1(-11002,'sigma', 50,0.,100.,0.)
+hist_book_2004.f:        call hbook1(-11003,'N'    ,1000,0.,5000.,0.)
+hist_book_2004.f:        call hbook1(-11004,'XSHW' ,200,-1200.,1100.,0.)
+hist_book_2004.f:        call hbook1(-11005,'YSHW' ,200,-1200.,1100.,0.)
+hist_book_2004.f:      call hbook2(-13001,'Mass <-> Angle correlations',100,0.,.4,
+hist_book_2004.f:      call hbook2(-13002,'Mass <-> Depth (ln(E)) correlations',
+hist_book_2004.f:c      call hbook2(-13003,'Mass <-> E correlations',550,0.,5500,
+hist_book_2004.f:      call hbook2(-13003,'Mass <-> Depth (ln(E)) correlations, komb',
+hist_book_2004.f:      call hbook2(-13004,'Mass <-> Depth (ln(E)) correlations, dopl',
+hist_book_2004.f:      call hbook2(-13005,'kakaya-to fignya',60,-1200.,1200.,
+hist_book_2004.f:c      call hbook1(-5003,'Odinochnye energii v 2g',1100,0.,5500.,0.)
+hist_book_2004.f:      call hbook1(-1,'sigmaq',100 ,0.,0.1,0.)
+hist_book_2004.f:      call hbook1(-2,'chi',   1000,0.,1. ,0.)
+hist_book_2004.f:      call hbook1(-3,'AB test',1000,-5.,5.,0.)
+hist_book_2004.f:      call hbook1(-6000,'transverce momentum, all particles'
+hist_book_2004.f:      call hbook1(406000,'transverce momentum, 4 gamma'
+hist_book_2004.f:      call hbook1(-6001,'transverce momentum, pi0'
+hist_book_2004.f:      call hbook1(-6002,'transverce momentum, eta'
+hist_book_2004.f:      call hbook1(-6003,'Xf, pi0'
+hist_book_2004.f:      call hbook1(-6004,'Xf, eta'
+hist_book_2004.f:      call hbook2(-6010,'transverce momentum vs mass, 2g'
+hist_book_2004.f:      call hbook2(-6011,'transverce momentum vs mass, pi0'
+hist_book_2004.f:      call hbook2(-6012,'transverce momentum vs mass, eta'
+hist_book_2004.f:      call hbook1(-61001,'t, all events, [p]^+! as beam particle'
+hist_book_2004.f:      call hbook1(-61002,'missmass, all events, [p]^+! as beam particle'
+hist_book_2004.f:      call hbook1(-62001,'t, all events, K^+! as beam particle'
+hist_book_2004.f:      call hbook1(-62002,'missmass, all events, K^+! as beam particle'
+hist_book_2004.f:      call hbook1(-61501,'t, 2[p]^0!, [p]^+! as beam particle'
+hist_book_2004.f:      call hbook1(-61502,'missmass, 2[p]^0!, [p]^+! as beam particle'
+hist_book_2004.f:      call hbook1(-62501,'t, 2[p]^0!, K^+! as beam particle'
+hist_book_2004.f:      call hbook1(-62502,'missmass, 2[p]^0!, K^+! as beam particle'
+hist_book_2004.f:      call hbook2(7200,'mass vs transverce momentum, 2g;ef.mass;Pt',
+hist_book_2004.f:      call hbook2(7201,'mass vs photon energy, 2g;ef.mass;gamma energy',
+hist_book_2004.f:      call hbook2(7300,'mass vs transverce momentum, 3g;ef.mass;Pt',
+hist_book_2004.f:      call hbook2(7301,'mass vs photon energy, 3g;ef.mass;gamma energy',
+hist_book_2004.f:      call hbook2(7400,'mass vs transverce momentum, 4g;ef.mass;Pt',
+hist_book_2004.f:      call hbook2(7401,'mass vs photon energy, 4g;ef.mass;gamma energy',
+hist_book_2004.f:!       call hbook2(7310,'mass vs transverce momentum, 3g,hyp 1;
+hist_book_2004.f:!       call hbook2(7311,'mass vs photon energy, 3g, hyp 1; 
+hist_book_2004.f:! !       call hbook2(7312,'mass vs photon energy, 3g, hyp 1; 
+hist_book_2004.f:!       call hbook2(7410,'mass vs transverce momentum, 4g, hyp 1;
+hist_book_2004.f:!       call hbook2(7411,'mass vs photon energy, 4g, hyp 1; 
+hist_book_2004.f:! !       call hbook2(7412,'mass vs photon energy, 4g, hyp 1; 
+hist_book_2004.f:      call hbook1(-60001-ipart*1000-ipeak*100-ikey*10,a32
+hist_book_2004.f:      call hbook1(-60002-ipart*1000-ipeak*100-ikey*10,a32
+hist_book_2004.f:        call hbook1(-30360-i,a32,1000,0.,2000.,0.)
+hist_book_2004.f:        call hbook1(-30120-i,a32,2000,0.,2000.,0.)
+hist_book_2004.f:c$$$      call hbook2(-75200,'zaselennost small E=weight',8,0.5,8.5,
+hist_book_2004.f:c$$$      call hbook2(-75100,'zaselennost big E=weight',24,0.5,24.5,
+hist_book_2004.f:c$$$      call hbook1(-75300,'energy in big cell',1000,0.,20000.,0.)
+hist_book_2004.f:c$$$      call hbook1(-75400,'energy in small cell',1000,0.,20000.,0.)
+hist_book_2004.f:c$$$      call hbook2(-70060,a32,300,0.,900.,
+hist_book_2004.f:c$$$      call hbook1(-70050,a32, 500,0.,2000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-70051,a32, 500,0.,2000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-70052,a32, 500,0.,2000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-70053,a32, 500,0.,2000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71020,a32, 6000,0.,12000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71120,a32, 6000,0.,12000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71320,a32, 6000,0.,12000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71420,a32, 6000,0.,12000., 0.)
+hist_book_2004.f:c$$$      call hbook2(-70030,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70040,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70330,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70340,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70130,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70140,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70430,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70440,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70010-j,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70020-j,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook1(-71060-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71030-j,a32,5000, 0.,10.E+06, 0.)
+hist_book_2004.f:c$$$      call hbook1(-71070-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71080-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71090-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook2(-71050-j,a32,500 , 0.,10.E+06, 50,-2.,2.,0.)
+hist_book_2004.f:c$$$      call hbook2(-71040-j,a32,600 ,-1.,5., 300,0.,15.,0.)
+hist_book_2004.f:c$$$      call hbook1(-72060-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72070-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72080-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72090-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook2(-72050-j,a32,500 , 0.,10.E+06, 50,-2.,2.,0.)
+hist_book_2004.f:c$$$      call hbook1(-72030-j,a32,5000, 0.,10.E+06, 0.)
+hist_book_2004.f:c$$$      call hbook1(-73060-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-73070-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-73080-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-74080-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72010-j,a32,6000,-1.,5., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71010-j,a32,6000,-1.,5., 0.)
+hist_book_2004.f:c$$$      call hbook2(-70310-j,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70320-j,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook1(-71360-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71330-j,a32,5000, 0.,10.E+06, 0.)
+hist_book_2004.f:c$$$      call hbook1(-71370-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71380-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71390-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook2(-71350-j,a32,500 , 0.,10.E+06, 50,-2.,2.,0.)
+hist_book_2004.f:c$$$      call hbook2(-71340-j,a32,600 ,-1.,5., 300,0.,15.,0.)
+hist_book_2004.f:c$$$      call hbook1(-72360-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72370-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72380-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72390-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook2(-72350-j,a32,500 , 0.,10.E+06, 50,-2.,2.,0.)
+hist_book_2004.f:c$$$      call hbook1(-72330-j,a32,5000, 0.,10.E+06, 0.)
+hist_book_2004.f:c$$$      call hbook1(-73360-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-73370-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-73380-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-74380-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72310-j,a32,6000,-1.,5., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71310-j,a32,6000,-1.,5., 0.)
+hist_book_2004.f:c$$$      call hbook2(-70110-j,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70120-j,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook1(-71160-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71130-j,a32,5000, 0.,10.E+06, 0.)
+hist_book_2004.f:c$$$      call hbook1(-71170-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71180-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71190-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook2(-71150-j,a32,500 , 0.,10.E+06, 50,-2.,2.,0.)
+hist_book_2004.f:c$$$      call hbook2(-71140-j,a32,600 ,-1.,5., 300,0.,15.,0.)
+hist_book_2004.f:c$$$      call hbook1(-72160-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72170-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72180-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72190-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook2(-72150-j,a32,500 , 0.,10.E+06, 50,-2.,2.,0.)
+hist_book_2004.f:c$$$      call hbook1(-72130-j,a32,5000, 0.,10.E+06, 0.)
+hist_book_2004.f:c$$$      call hbook1(-73160-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-73170-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-73180-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-74180-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72110-j,a32,6000,-1.,5., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71110-j,a32,6000,-1.,5., 0.)
+hist_book_2004.f:c$$$      call hbook2(-70410-j,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook2(-70420-j,a32,60,-1200.,1200.,
+hist_book_2004.f:c$$$      call hbook1(-71460-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71430-j,a32,5000, 0.,10.E+06, 0.)
+hist_book_2004.f:c$$$      call hbook1(-71470-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71480-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71490-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook2(-71450-j,a32,500 , 0.,10.E+06, 50,-2.,2.,0.)
+hist_book_2004.f:c$$$      call hbook2(-71440-j,a32,600 ,-1.,5., 300,0.,15.,0.)
+hist_book_2004.f:c$$$      call hbook1(-72460-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72470-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72480-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72490-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook2(-72450-j,a32,500 , 0.,10.E+06, 50,-2.,2.,0.)
+hist_book_2004.f:c$$$      call hbook1(-72430-j,a32,5000, 0.,10.E+06, 0.)
+hist_book_2004.f:c$$$      call hbook1(-73460-j,a32,5000, 0.,5000., 0.)
+hist_book_2004.f:c$$$      call hbook1(-73470-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-73480-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-74480-j,a32, 500,-2.,   2., 0.)
+hist_book_2004.f:c$$$      call hbook1(-72410-j,a32,6000,-1.,5., 0.)
+hist_book_2004.f:c$$$      call hbook1(-71410-j,a32,6000,-1.,5., 0.)
+libapr84.f:C-       call hbook1(Imfit+50+1000*ngam_+icp*100+ice,a32,1000,0.,2000.,0.)
+libapr84.f:C-       call hbook1(Imfit+50+1000*ngam_+icp*100+ice,'Etot with Pt cut',
+libapr84.f:C-       call hbook1(Imfit+60+1000*ngam_+icp*100+ice,
+libapr84.f:C-      call hbook1(400000+IH,a32,1000, 0., 2.0, 0.)
+libapr84.f:C-      call hbook1(400000+IH+1,a32,1000, 0., 2.0, 0.)
+libapr84.f:C-    call hbook1(100000+IH,a32,1000, 0., 2.0, 0.)
+libapr84.f:C-    call hbook1(200000+IH,a32,1000, 0., 2.0, 0.)
+libapr84.f:C-    call hbook1(300000+IH,a32,1000, 0., 2.0, 0.)
+libapr84.f:C-     call hbook1(	   IH+50,a32, 1000, 0., 2000., 0.)
+libapr84.f:C-     call hbook1( 100000+IH+50,a32, 1000, 0., 2000., 0.)
+libapr84.f:C      call hbook1( 200000+IH+50,a32, 1000, 0., 2000., 0.)
+libapr84.f:C      call hbook1( 300000+IH+50,a32, 1000, 0., 2000., 0.)
+libapr84.f:C-    call hbook1((iii+IH+50 +j),a32, 1000, 0., 2000., 0.)
+libapr84.f:C-    call hbook1( (iii+IH+100+j),a32, 1000, 0., 2000., 0.)
+libapr84.f:C-    call hbook1(-(iii+IH+100+j),a32, 1000, 0., 2000., 0.)
+libapr84.f:C-    call hbook1( (iii+IH+150+j),a32, 1000, 0., 2000., 0.)
+libapr84.f:C-    call hbook1(-(iii+IH+10 +j),a32, 1000, 0., 2000., 0.)
+libapr84.f:C-    call hbook1( (iii+IH+200+j),a32, 1000, 0., 2000., 0.)
+libapr84.f:C-    call hbook1(-(iii+IH+20 +j),a32, 1000, 0., 2000., 0.)
+libapr84.f:C-    call hbook1((iii+IH+250+j),a32, 1000, 0., 2000., 0.) !!<--gde zapolnenie?
+libapr84.f:      call hbook1(5500+igm*10+ihyp, base_name, 200,0.,1.,0.)            ! probabilities
+libapr84.f:      call hbook1(5600+igm*10+ihyp, base_name, 200,0.,1.,0.)            ! probabilities after cut
+libapr84.f:        call hbook1(IH +50 +j,  base_name,1000,0.,2.,0.)                ! Eff mass
+libapr84.f:        call hbook1(-(IH +50 +j),khist_name,1000,0.,2.,0.)
+libapr84.f:        call hbook1(IH +60 +j,base_name,300,0.,15.,0.)                  ! Etot
+libapr84.f:        call hbook1(-(IH+60+j),khist_name,300,0.,15.,0.)
+libapr84.f:        call hbook1(IH +70 +j,base_name,1000,0.,2.,0.)                  ! Pt
+libapr84.f:        call hbook1(-(IH+70+j),khist_name,1000,0.,2.,0.)
+libapr84.f:       call hbook1(10000000*kcheren +IH +50 +j,base_name,1000,0.,2.,0.)
+libapr84.f:       call hbook1(-(10000000*kcheren+IH+50+j),khist_name,1000,0.,2.,0.)
+libapr84.f:       call hbook1(10000000*kcheren +IH +60 +j,base_name,300,0.,15.,0.)
+libapr84.f:!        call hbook1(-(10000000*kcheren+IH+60+j),khist_name,300,0.,15.,0.)
+libapr84.f:       call hbook1(10000000*kcheren +IH +70 +j,base_name,1000,0.,2.,0.)
+libapr84.f:!        call hbook1(-(10000000*kcheren+IH+70+j),khist_name,1000,0.,2.,0.)
+libapr84.f:        call hbook1(  1000000 +IH +50 +j,  base_name,1000,0.,2.,0.)
+libapr84.f:        call hbook1(-(1000000 +IH +50 +j),khist_name,1000,0.,2.,0.)
+libapr84.f:        call hbook1(1000000 +IH +60 +j,base_name,300,0.,15.,0.)
+libapr84.f:        call hbook1(-(1000000+IH+60+j),khist_name,300,0.,15.,0.)
+libapr84.f:        call hbook1(1000000 +IH +70 +j,base_name,1000,0.,2.,0.)
+libapr84.f:        call hbook1(-(1000000 +IH +70 +j),khist_name,1000,0.,2.,0.)
+libapr84.f:!         call hbook1(10000000*kcheren + 1000000+IH+50+j,base_name,
+libapr84.f:!         call hbook1(-(10000000*kcheren+1000000+IH+50+j),khist_name,
+libapr84.f:! !        call hbook1(10000000*kcheren +IH +60 +j,base_name,300,0.,15.,0.)
+libapr84.f:! !        call hbook1(-(10000000*kcheren+IH+60+j),khist_name,300,0.,15.,0.)
+libapr84.f:! !        call hbook1(10000000*kcheren +IH +70 +j,base_name,1000,0.,2.,0.)
+libapr84.f:! !        call hbook1(-(10000000*kcheren+IH+70+j),khist_name,1000,0.,2.,0.)
+libapr84.f:      call hbook2(5590+1, 'Correlation between 3g-hypothesa (no cut): 
+libapr84.f:      call hbook2(5590+2, 'Correlation between 4g-hypothesa (no cut): 
+libapr84.f:      call hbook2(5590+3, 'Correlation between 4g-hypothesa (no cut): 
+libapr84.f:      call hbook2(5590+4, 'Correlation between 4g-hypothesa (no cut): 
+libapr84.f:      call hbook2(13112, 'Correlation between 3g-hypothesa, after cut
+libapr84.f:      call hbook2(13212, 'Correlation between 3g-hypothesa, after cut
+libapr84.f:      call hbook2(14112, 'Correlation between 4g-hypothesa, after cut
+libapr84.f:      call hbook2(14113, 'Correlation between 4g-hypothesa, after cut
+libapr84.f:      call hbook2(14212, 'Correlation between 4g-hypothesa, after cut
+libapr84.f:      call hbook2(14223, 'Correlation between 4g-hypothesa, after cut
+libapr84.f:      call hbook2(14313, 'Correlation between 4g-hypothesa, after cut
+libapr84.f:      call hbook2(14323, 'Correlation between 4g-hypothesa, after cut
+libapr84.f:c      call hbook1(IH+100,a32, 1000, 0., 2000., 0.)
+libapr84.f:c      call hbook1(IH+150,a32, 1000, 0., 2000., 0.)
+libapr84.f:c      call hbook1(IH+200,a32, 1000, 0., 2000., 0.)
+libapr84.f:c      call hbook1(       IH+250+j,a32, 1000, 0., 2000., 0.)
+libapr84.f:c      call hbook1(100000+IH+250+j,a32, 1000, 0., 2000., 0.)
+libapr84.f:c      call hbook1(200000+IH+250+j,a32, 1000, 0., 2000., 0.)
+libapr84.f:c      call hbook1(300000+IH+250+j,a32, 1000, 0., 2000., 0.)

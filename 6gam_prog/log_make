@@ -1,0 +1,786 @@
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ ampl_energy.f
+Warning: Nonconforming tab character in column 6 of line 150
+Warning: Nonconforming tab character in column 1 of line 177
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ angle.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ array_init_2004.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ booking.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ calibr2.f
+Warning: Nonconforming tab character in column 6 of line 123
+Warning: Nonconforming tab character in column 3 of line 148
+Warning: Nonconforming tab character in column 3 of line 149
+Warning: Nonconforming tab character in column 2 of line 196
+Warning: Nonconforming tab character in column 3 of line 276
+Warning: Nonconforming tab character in column 1 of line 277
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ calibr_fin.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ calibr_init_2004.f
+g++ -c -g -Wall  -fPIC  -Dlong32="int" -Dlong64="long long" -DLINUX -I./ calibr_main.cxx
+calibr_main.cxx: In function ‘int main(int, char**)’:
+calibr_main.cxx:829:8: warning: variable ‘L’ set but not used [-Wunused-but-set-variable]
+      i,L,iEV,lenb,IGg,IDb,L1e,L2e,ipri_1,evi_mis2;
+        ^
+calibr_main.cxx:559:53: warning: variable ‘time_69’ set but not used [-Wunused-but-set-variable]
+     L1e_out,L2e_out, ERmis,iEV,iBL_prev_max,evi_mis,time_69,
+                                                     ^
+calibr_main.cxx:1115:11: warning: variable ‘i’ set but not used [-Wunused-but-set-variable]
+       int i,ima;
+           ^
+calibr_main.cxx:110:69: warning: variable ‘ityp10’ set but not used [-Wunused-but-set-variable]
+   int Nrun_number=0,irun_type=0,nrec=0,evi=0,evi_loc=0,evit=0,iBL=0,ityp10=0,
+                                                                     ^
+In file included from zwalls.h:11:0,
+                 from calibr_main.cxx:24:
+/usr/include/hbook.h: At global scope:
+cfortran.h:1897:23: warning: ‘int __cf__HEXIST(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HI(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HIE(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HIF(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HIJ(int, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HIJE(int, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HMAX(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HMIN(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HRNDM1(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HSPFUN(int, float, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HSTATI(int, int, char*, int, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HSUM(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HX(int, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HXE(int, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HXY(int, float, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘int __cf__HLABEQ(int, char*, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘int __cf__HLABNB(int, char*, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘int __cf__HNTNEW(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ cal_koef_correc.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ cameras_process.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ Cherenkovs.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ correc2.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ cosdir2.f
+Warning: Nonconforming tab character in column 1 of line 36
+Warning: Nonconforming tab character in column 2 of line 54
+Warning: Nonconforming tab character in column 1 of line 86
+Warning: Nonconforming tab character in column 1 of line 87
+Warning: Nonconforming tab character in column 1 of line 88
+cosdir2.f:31.22:
+
+        RB=DBLE(ZWALL  - ZTARG)                                         
+                      1
+Warning: Nonconforming tab character at (1)
+cosdir2.f:56.19:
+
+        AX = dx/RB         !  Original                                  
+                   1
+Warning: Nonconforming tab character at (1)
+cosdir2.f:57.19:
+
+        AY = dy/RB         !  Original                                  
+                   1
+Warning: Nonconforming tab character at (1)
+cosdir2.f:58.60:
+
+        AX = dble(ax-nyu*x0*(alog(Egam(IG)/Ec)+ 0.5)*ax/rb)    !  Origin
+                                                            1
+Warning: Nonconforming tab character at (1)
+cosdir2.f:59.60:
+
+        AY = dble(ay-nyu*x0*(alog(Egam(IG)/Ec)+ 0.5)*ay/rb)    !  Origin
+                                                            1
+Warning: Nonconforming tab character at (1)
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ counters_process.f
+g++ -c -g -Wall  -fPIC  -Dlong32="int" -Dlong64="long long" -DLINUX -I./ decode_chamber.cxx
+decode_chamber.cxx: In function ‘void chamber_treatment(int*, int)’:
+decode_chamber.cxx:39:7: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+   int a, n, c;
+       ^
+In file included from queue.h:7:0,
+                 from decode_chamber.cxx:2:
+/usr/include/hbook.h: At global scope:
+./cfortran.h:1897:23: warning: ‘int __cf__HEXIST(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HI(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HIE(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HIF(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HIJ(int, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HIJE(int, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HMAX(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HMIN(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HRNDM1(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HSPFUN(int, float, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HSTATI(int, int, char*, int, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HSUM(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HX(int, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HXE(int, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HXY(int, float, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘int __cf__HLABEQ(int, char*, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘int __cf__HLABNB(int, char*, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘int __cf__HNTNEW(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ efmass.f
+Warning: Nonconforming tab character in column 2 of line 215
+Warning: Nonconforming tab character in column 1 of line 625
+Warning: Nonconforming tab character in column 1 of line 713
+Warning: Nonconforming tab character in column 1 of line 753
+Warning: Nonconforming tab character in column 3 of line 756
+Warning: Nonconforming tab character in column 1 of line 761
+Warning: Nonconforming tab character in column 1 of line 762
+Warning: Nonconforming tab character in column 1 of line 763
+Warning: Nonconforming tab character in column 1 of line 764
+Warning: Nonconforming tab character in column 1 of line 767
+Warning: Nonconforming tab character in column 1 of line 769
+Warning: Nonconforming tab character in column 3 of line 770
+Warning: Nonconforming tab character in column 3 of line 771
+Warning: Nonconforming tab character in column 1 of line 772
+Warning: Nonconforming tab character in column 1 of line 773
+Warning: Nonconforming tab character in column 1 of line 775
+Warning: Nonconforming tab character in column 1 of line 777
+Warning: Nonconforming tab character in column 2 of line 782
+Warning: Nonconforming tab character in column 5 of line 783
+Warning: Nonconforming tab character in column 3 of line 784
+Warning: Nonconforming tab character in column 3 of line 786
+Warning: Nonconforming tab character in column 3 of line 787
+Warning: Nonconforming tab character in column 3 of line 788
+Warning: Nonconforming tab character in column 3 of line 789
+Warning: Nonconforming tab character in column 3 of line 790
+Warning: Nonconforming tab character in column 1 of line 796
+Warning: Nonconforming tab character in column 1 of line 797
+Warning: Nonconforming tab character in column 1 of line 798
+Warning: Nonconforming tab character in column 1 of line 799
+Warning: Nonconforming tab character in column 2 of line 800
+Warning: Nonconforming tab character in column 1 of line 801
+Warning: Nonconforming tab character in column 1 of line 802
+Warning: Nonconforming tab character in column 1 of line 804
+Warning: Nonconforming tab character in column 3 of line 805
+Warning: Nonconforming tab character in column 3 of line 806
+Warning: Nonconforming tab character in column 1 of line 807
+Warning: Nonconforming tab character in column 1 of line 808
+Warning: Nonconforming tab character in column 1 of line 810
+Warning: Nonconforming tab character in column 2 of line 817
+Warning: Nonconforming tab character in column 1 of line 819
+Warning: Nonconforming tab character in column 1 of line 821
+Warning: Nonconforming tab character in column 3 of line 822
+Warning: Nonconforming tab character in column 3 of line 823
+Warning: Nonconforming tab character in column 1 of line 824
+Warning: Nonconforming tab character in column 1 of line 825
+Warning: Nonconforming tab character in column 6 of line 933
+efmass.f:762.26:
+
+              do qqq=1,10                                               
+                          1
+Warning: Nonconforming tab character at (1)
+efmass.f:793.30:
+
+            call hf1(5215, TT    , 1.)                                  
+                              1
+Warning: Nonconforming tab character at (1)
+efmass.f:797.24:
+
+            do qqq=1,10                                                 
+                        1
+Warning: Nonconforming tab character at (1)
+efmass.f:810.32:
+
+              call hf1(5216, TT    , 1.)                                
+                                1
+Warning: Nonconforming tab character at (1)
+efmass.f:814.26:
+
+              do qqq=1,10                                               
+                          1
+Warning: Nonconforming tab character at (1)
+efmass.f:821.19:
+
+            enddo                                                       
+                   1
+Warning: Nonconforming tab character at (1)
+efmass.f:936.66:
+
+     +             call hf1(30060+(ngam-1)*100+qqq-1,sqrt_efm,1.)       
+                                                                  1
+Warning: Nonconforming tab character at (1)
+efmass.f:989.31:
+
+                  call minimas(iparts,partts(i1),partts(i2),mm)         
+                               1
+Warning: Rank mismatch in argument 'ipart' at (1) (rank-1 and scalar)
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ event_decode_2005.f
+Warning: Nonconforming tab character in column 6 of line 87
+Warning: Nonconforming tab character in column 1 of line 237
+Warning: Nonconforming tab character in column 1 of line 309
+Warning: Nonconforming tab character in column 1 of line 330
+Warning: Nonconforming tab character in column 1 of line 331
+Warning: Nonconforming tab character in column 4 of line 346
+Warning: Nonconforming tab character in column 3 of line 349
+Warning: Nonconforming tab character in column 3 of line 350
+Warning: Nonconforming tab character in column 3 of line 351
+Warning: Nonconforming tab character in column 3 of line 352
+Warning: Nonconforming tab character in column 3 of line 353
+Warning: Nonconforming tab character in column 4 of line 354
+Warning: Nonconforming tab character in column 2 of line 358
+Warning: Nonconforming tab character in column 3 of line 359
+Warning: Nonconforming tab character in column 2 of line 361
+Warning: Nonconforming tab character in column 3 of line 364
+Warning: Nonconforming tab character in column 1 of line 368
+Warning: Nonconforming tab character in column 3 of line 369
+Warning: Nonconforming tab character in column 1 of line 370
+Warning: Nonconforming tab character in column 3 of line 421
+Warning: Nonconforming tab character in column 1 of line 452
+Warning: Nonconforming tab character in column 1 of line 454
+Warning: Nonconforming tab character in column 1 of line 474
+Warning: Nonconforming tab character in column 1 of line 488
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ filling2.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ fngam.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ geometry.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ hb_cherenkovs.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ hb_match_mwpc_lgd2.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ hb_scaler.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ hist_book_2004.f
+Warning: Nonconforming tab character in column 2 of line 146
+Warning: Nonconforming tab character in column 6 of line 159
+Warning: Nonconforming tab character in column 2 of line 195
+Warning: Nonconforming tab character in column 2 of line 197
+Warning: Nonconforming tab character in column 1 of line 216
+Warning: Nonconforming tab character in column 3 of line 229
+Warning: Nonconforming tab character in column 1 of line 244
+Warning: Nonconforming tab character in column 2 of line 389
+Warning: Nonconforming tab character in column 2 of line 404
+Warning: Nonconforming tab character in column 1 of line 409
+Warning: Nonconforming tab character in column 1 of line 411
+Warning: Nonconforming tab character in column 1 of line 412
+Warning: Nonconforming tab character in column 1 of line 415
+Warning: Nonconforming tab character in column 1 of line 427
+Warning: Nonconforming tab character in column 1 of line 428
+Warning: Nonconforming tab character in column 1 of line 429
+Warning: Nonconforming tab character in column 5 of line 430
+Warning: Nonconforming tab character in column 5 of line 431
+Warning: Nonconforming tab character in column 1 of line 432
+Warning: Nonconforming tab character in column 1 of line 433
+Warning: Nonconforming tab character in column 1 of line 434
+Warning: Nonconforming tab character in column 1 of line 558
+Warning: Nonconforming tab character in column 1 of line 561
+Warning: Nonconforming tab character in column 1 of line 565
+Warning: Nonconforming tab character in column 1 of line 568
+Warning: Nonconforming tab character in column 1 of line 584
+Warning: Nonconforming tab character in column 1 of line 586
+Warning: Nonconforming tab character in column 1 of line 591
+Warning: Nonconforming tab character in column 1 of line 595
+Warning: Nonconforming tab character in column 1 of line 597
+Warning: Nonconforming tab character in column 1 of line 599
+Warning: Nonconforming tab character in column 2 of line 604
+Warning: Nonconforming tab character in column 1 of line 608
+Warning: Nonconforming tab character in column 1 of line 610
+Warning: Nonconforming tab character in column 1 of line 612
+Warning: Nonconforming tab character in column 2 of line 617
+Warning: Nonconforming tab character in column 1 of line 621
+Warning: Nonconforming tab character in column 1 of line 623
+Warning: Nonconforming tab character in column 1 of line 625
+hist_book_2004.f:407.19:
+
+              else                                                      
+                   1
+Warning: Nonconforming tab character at (1)
+hist_book_2004.f:609.22:
+
+     &                            100, 0.,   1.,0.)                     
+                      1
+Warning: Nonconforming tab character at (1)
+hist_book_2004.f:622.25:
+
+     &                             100,0.,   1.,0.)                     
+                         1
+Warning: Nonconforming tab character at (1)
+hist_book_2004.f:644.29:
+
+      call hbook1(-11003,'N' ,1000,0.,5000.,0.)                         
+                             1
+Warning: Nonconforming tab character at (1)
+g++ -c -g -Wall  -fPIC  -Dlong32="int" -Dlong64="long long" -DLINUX -I./ hyperon_scalers.cxx
+In file included from T_Clock.h:9:0,
+                 from hyperon_scalers.cxx:4:
+cfortran.h:1897:23: warning: ‘int __cf__HEXIST(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HI(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HIE(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HIF(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HIJ(int, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HIJE(int, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HMAX(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HMIN(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HRNDM1(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HSPFUN(int, float, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HSTATI(int, int, char*, int, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HSUM(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HX(int, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HXE(int, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘float __cf__HXY(int, float, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘int __cf__HLABEQ(int, char*, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘int __cf__HLABNB(int, char*, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+cfortran.h:1897:23: warning: ‘int __cf__HNTNEW(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ idofdetfun.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ libapr84.f
+Warning: Nonconforming tab character in column 1 of line 155
+Warning: Nonconforming tab character in column 1 of line 159
+Warning: Nonconforming tab character in column 1 of line 434
+Warning: Nonconforming tab character in column 1 of line 522
+Warning: Nonconforming tab character in column 1 of line 523
+Warning: Nonconforming tab character in column 1 of line 525
+Warning: Nonconforming tab character in column 1 of line 526
+Warning: Nonconforming tab character in column 1 of line 528
+Warning: Nonconforming tab character in column 1 of line 537
+Warning: Nonconforming tab character in column 5 of line 544
+Warning: Nonconforming tab character in column 2 of line 587
+Warning: Nonconforming tab character in column 5 of line 618
+Warning: Nonconforming tab character in column 5 of line 619
+Warning: Nonconforming tab character in column 5 of line 620
+Warning: Nonconforming tab character in column 5 of line 622
+Warning: Nonconforming tab character in column 5 of line 623
+Warning: Nonconforming tab character in column 5 of line 624
+Warning: Nonconforming tab character in column 5 of line 625
+Warning: Nonconforming tab character in column 5 of line 626
+Warning: Nonconforming tab character in column 5 of line 627
+Warning: Nonconforming tab character in column 5 of line 628
+Warning: Nonconforming tab character in column 5 of line 629
+Warning: Nonconforming tab character in column 5 of line 630
+Warning: Nonconforming tab character in column 5 of line 631
+Warning: Nonconforming tab character in column 5 of line 632
+Warning: Nonconforming tab character in column 5 of line 633
+Warning: Nonconforming tab character in column 5 of line 634
+Warning: Nonconforming tab character in column 5 of line 635
+Warning: Nonconforming tab character in column 5 of line 636
+Warning: Nonconforming tab character in column 1 of line 721
+Warning: Nonconforming tab character in column 1 of line 722
+Warning: Nonconforming tab character in column 1 of line 723
+Warning: Nonconforming tab character in column 1 of line 724
+Warning: Nonconforming tab character in column 1 of line 725
+Warning: Nonconforming tab character in column 1 of line 726
+Warning: Nonconforming tab character in column 1 of line 727
+Warning: Nonconforming tab character in column 1 of line 754
+Warning: Nonconforming tab character in column 1 of line 756
+Warning: Nonconforming tab character in column 1 of line 757
+Warning: Nonconforming tab character in column 1 of line 758
+Warning: Nonconforming tab character in column 1 of line 769
+Warning: Nonconforming tab character in column 1 of line 770
+Warning: Nonconforming tab character in column 1 of line 771
+Warning: Nonconforming tab character in column 1 of line 772
+Warning: Nonconforming tab character in column 1 of line 774
+Warning: Nonconforming tab character in column 1 of line 775
+Warning: Nonconforming tab character in column 1 of line 785
+Warning: Nonconforming tab character in column 1 of line 786
+Warning: Nonconforming tab character in column 1 of line 787
+Warning: Nonconforming tab character in column 1 of line 788
+Warning: Nonconforming tab character in column 1 of line 790
+Warning: Nonconforming tab character in column 1 of line 791
+Warning: Nonconforming tab character in column 1 of line 802
+Warning: Nonconforming tab character in column 1 of line 803
+Warning: Nonconforming tab character in column 1 of line 804
+Warning: Nonconforming tab character in column 1 of line 805
+Warning: Nonconforming tab character in column 1 of line 807
+Warning: Nonconforming tab character in column 1 of line 808
+Warning: Nonconforming tab character in column 1 of line 829
+Warning: Nonconforming tab character in column 1 of line 835
+Warning: Nonconforming tab character in column 1 of line 838
+Warning: Nonconforming tab character in column 2 of line 847
+Warning: Nonconforming tab character in column 5 of line 848
+Warning: Nonconforming tab character in column 5 of line 850
+Warning: Nonconforming tab character in column 5 of line 852
+Warning: Nonconforming tab character in column 1 of line 868
+Warning: Nonconforming tab character in column 3 of line 948
+Warning: Nonconforming tab character in column 1 of line 949
+Warning: Nonconforming tab character in column 1 of line 950
+Warning: Nonconforming tab character in column 1 of line 951
+Warning: Nonconforming tab character in column 1 of line 952
+Warning: Nonconforming tab character in column 1 of line 953
+Warning: Nonconforming tab character in column 1 of line 954
+Warning: Nonconforming tab character in column 1 of line 955
+Warning: Nonconforming tab character in column 1 of line 956
+Warning: Nonconforming tab character in column 1 of line 1031
+Warning: Nonconforming tab character in column 1 of line 1152
+Warning: Nonconforming tab character in column 1 of line 1153
+Warning: Nonconforming tab character in column 1 of line 1154
+Warning: Nonconforming tab character in column 1 of line 1155
+Warning: Nonconforming tab character in column 1 of line 1157
+Warning: Nonconforming tab character in column 1 of line 1158
+Warning: Nonconforming tab character in column 1 of line 1161
+Warning: Nonconforming tab character in column 1 of line 1162
+Warning: Nonconforming tab character in column 1 of line 1163
+Warning: Nonconforming tab character in column 1 of line 1165
+Warning: Nonconforming tab character in column 1 of line 1166
+Warning: Nonconforming tab character in column 1 of line 1167
+Warning: Nonconforming tab character in column 1 of line 1168
+Warning: Nonconforming tab character in column 1 of line 1169
+Warning: Nonconforming tab character in column 1 of line 1170
+Warning: Nonconforming tab character in column 1 of line 1171
+Warning: Nonconforming tab character in column 1 of line 1172
+Warning: Nonconforming tab character in column 1 of line 1173
+Warning: Nonconforming tab character in column 1 of line 1175
+Warning: Nonconforming tab character in column 1 of line 1176
+Warning: Nonconforming tab character in column 1 of line 1177
+Warning: Nonconforming tab character in column 1 of line 1178
+Warning: Nonconforming tab character in column 5 of line 1181
+Warning: Nonconforming tab character in column 1 of line 1182
+Warning: Nonconforming tab character in column 1 of line 1183
+Warning: Nonconforming tab character in column 1 of line 1184
+Warning: Nonconforming tab character in column 1 of line 1185
+Warning: Nonconforming tab character in column 1 of line 1186
+Warning: Nonconforming tab character in column 1 of line 1187
+Warning: Nonconforming tab character in column 1 of line 1188
+Warning: Nonconforming tab character in column 1 of line 1189
+Warning: Nonconforming tab character in column 1 of line 1190
+Warning: Nonconforming tab character in column 1 of line 1191
+Warning: Nonconforming tab character in column 1 of line 1192
+Warning: Nonconforming tab character in column 1 of line 1193
+Warning: Nonconforming tab character in column 1 of line 1194
+Warning: Nonconforming tab character in column 1 of line 1195
+Warning: Nonconforming tab character in column 1 of line 1196
+Warning: Nonconforming tab character in column 1 of line 1197
+Warning: Nonconforming tab character in column 1 of line 1198
+Warning: Nonconforming tab character in column 1 of line 1199
+Warning: Nonconforming tab character in column 1 of line 1200
+Warning: Nonconforming tab character in column 1 of line 1201
+Warning: Nonconforming tab character in column 1 of line 1202
+Warning: Nonconforming tab character in column 1 of line 1203
+Warning: Nonconforming tab character in column 1 of line 1205
+Warning: Nonconforming tab character in column 5 of line 1206
+Warning: Nonconforming tab character in column 1 of line 1207
+Warning: Nonconforming tab character in column 1 of line 1208
+Warning: Nonconforming tab character in column 2 of line 1352
+libapr84.f:464.14:
+
+         MNEV = NEV                                                     
+              1
+Warning: Nonconforming tab character at (1)
+libapr84.f:465.14:
+
+         MFIT = NHIP   ! here we save the number of current hypothesis a
+              1
+Warning: Nonconforming tab character at (1)
+libapr84.f:479.53:
+
+         EffectiveMass = real(sqrt(abs(efmq))*1000.)                    
+                                                     1
+Warning: Nonconforming tab character at (1)
+libapr84.f:742.35:
+
+      CALL HF1(IHM+18, RYC6   ,1.)                                      
+                                   1
+Warning: Nonconforming tab character at (1)
+libapr84.f:745.35:
+
+      CALL HF1(IHM+24, PYsum  ,1.)                                      
+                                   1
+Warning: Nonconforming tab character at (1)
+libapr84.f:775.46:
+
+               call hf2(IHM+50, MMS ,-RT, 1.)                           
+                                              1
+Warning: Nonconforming tab character at (1)
+libapr84.f:791.46:
+
+               call hf2(IHM+50, MMS ,-RT, 1.)                           
+                                              1
+Warning: Nonconforming tab character at (1)
+libapr84.f:808.44:
+
+             call hf2(IHM+60, MMS ,-RT, 1.)                             
+                                            1
+Warning: Nonconforming tab character at (1)
+libapr84.f:859.41:
+
+               Kfit = 1; goto 751; endif        ! not used ; mind the 75
+                                         1
+Warning: Nonconforming tab character at (1)
+libapr84.f:864.40:
+
+              Kfit = 2; goto 751; endif        ! not used ; mind the 752
+                                        1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1152.9:
+
+     +       +plab_kondr(iindex,2)                                      
+         1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1186.38:
+
+            CALL HF1(-(IH+70+j), pt12  ,1.)                             
+                                      1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1196.38:
+
+            CALL HF1(-(IH+70+j), pt21  ,1.)                             
+                                      1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1460.9:
+
+     &                    150,-.1, 1.4,0.)                              
+         1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1462.9:
+
+     &             150,-.1, 1.4,0.)                                     
+         1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1470.70:
+
+      call hbook1(IH+64,'M2pi0 out f2,Etot.gt. 3.0',2000, 0., 2.0,0.)   
+                                                                      1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1476.9:
+
+     &                   150,-.1, 1.4,0.)                               
+         1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1478.9:
+
+     &            150,-.1, 1.4,0.)                                      
+         1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1483.70:
+
+      call hbook1(IH+74,'M2pi0 out Ks,Etot.gt. 2.5',2000, 0., 2.0,0.)   
+                                                                      1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1489.9:
+
+     &                   150,-.1, 1.4,0.)                               
+         1
+Warning: Nonconforming tab character at (1)
+libapr84.f:1491.9:
+
+     &            150,-.1, 1.4,0.)                                      
+         1
+Warning: Nonconforming tab character at (1)
+libapr84.f:287.25:
+
+      common /kondratyuk/Petaeg1(4,4,imix),Pgameg1(4,4,imix),ietagamma1,
+                         1
+Warning: Padding of 4 bytes required before 'ppi01pp1_ch' in COMMON 'kondratyuk' at (1); reorder elements or use -fno-align-commons
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ matr_ent2.f
+Warning: Nonconforming tab character in column 1 of line 70
+Warning: Nonconforming tab character in column 1 of line 115
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ mclus.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ new_clb.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ ntup_book.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ pi0fitbu.f
+Warning: Nonconforming tab character in column 1 of line 82
+Warning: Nonconforming tab character in column 2 of line 86
+g++ -c -g -Wall  -fPIC  -Dlong32="int" -Dlong64="long long" -DLINUX -I./ queue_class_function.cxx
+In file included from queue.h:7:0,
+                 from queue_class_function.cxx:1:
+./cfortran.h:1897:23: warning: ‘int __cf__HEXIST(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HI(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HIE(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HIF(int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HIJ(int, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HIJE(int, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HMAX(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HMIN(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HRNDM1(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HSPFUN(int, float, int, int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HSTATI(int, int, char*, int, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HSUM(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HX(int, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HXE(int, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘float __cf__HXY(int, float, float)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘int __cf__HLABEQ(int, char*, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘int __cf__HLABNB(int, char*, unsigned int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+./cfortran.h:1897:23: warning: ‘int __cf__HNTNEW(int)’ defined but not used [-Wunused-function]
+ #define CFFUN(NAME) _(__cf__,NAME)
+                       ^
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ shower_recon.f
+Warning: Nonconforming tab character in column 2 of line 203
+Warning: Nonconforming tab character in column 3 of line 205
+Warning: Nonconforming tab character in column 3 of line 206
+Warning: Nonconforming tab character in column 3 of line 207
+Warning: Nonconforming tab character in column 2 of line 243
+Warning: Nonconforming tab character in column 3 of line 244
+Warning: Nonconforming tab character in column 2 of line 273
+Warning: Nonconforming tab character in column 2 of line 274
+Warning: Nonconforming tab character in column 2 of line 283
+Warning: Nonconforming tab character in column 3 of line 284
+Warning: Nonconforming tab character in column 1 of line 285
+Warning: Nonconforming tab character in column 3 of line 311
+Warning: Nonconforming tab character in column 3 of line 316
+Warning: Nonconforming tab character in column 3 of line 328
+Warning: Nonconforming tab character in column 1 of line 329
+Warning: Nonconforming tab character in column 1 of line 339
+Warning: Nonconforming tab character in column 6 of line 415
+Warning: Nonconforming tab character in column 6 of line 416
+Warning: Nonconforming tab character in column 6 of line 417
+Warning: Nonconforming tab character in column 6 of line 418
+Warning: Nonconforming tab character in column 6 of line 419
+Warning: Nonconforming tab character in column 6 of line 420
+Warning: Nonconforming tab character in column 6 of line 421
+Warning: Nonconforming tab character in column 1 of line 424
+Warning: Nonconforming tab character in column 1 of line 425
+Warning: Nonconforming tab character in column 6 of line 426
+Warning: Nonconforming tab character in column 2 of line 434
+g++ -c -g -Wall  -fPIC  -Dlong32="int" -Dlong64="long long" -DLINUX -I./ string_text.cxx
+string_text.cxx: In function ‘int deletgz_string(char*, char*)’:
+string_text.cxx:363:26: warning: variable ‘iend2’ set but not used [-Wunused-but-set-variable]
+       int ic,k=0,n,iend1,iend2,i162,i162_2;
+                          ^
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ track_scalers_prnt.f
+g++ -c -g -Wall  -fPIC  -Dlong32="int" -Dlong64="long long" -DLINUX -I./ tracks.cxx
+tracks.cxx: In function ‘void tracks(short unsigned int*, int)’:
+tracks.cxx:60:7: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+   int a, n, c, npmin1;
+       ^
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ user_cards.f
+Warning: Nonconforming tab character in column 2 of line 85
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ wall2_proc.f
+Warning: Nonconforming tab character in column 1 of line 109
+Warning: Nonconforming tab character in column 1 of line 111
+Warning: Nonconforming tab character in column 2 of line 112
+Warning: Nonconforming tab character in column 3 of line 199
+Warning: Nonconforming tab character in column 1 of line 272
+Warning: Nonconforming tab character in column 1 of line 274
+Warning: Nonconforming tab character in column 1 of line 276
+Warning: Nonconforming tab character in column 1 of line 277
+Warning: Nonconforming tab character in column 1 of line 278
+Warning: Nonconforming tab character in column 1 of line 279
+Warning: Nonconforming tab character in column 1 of line 289
+Warning: Nonconforming tab character in column 1 of line 290
+Warning: Nonconforming tab character in column 1 of line 350
+Warning: Nonconforming tab character in column 1 of line 351
+Warning: Nonconforming tab character in column 1 of line 352
+Warning: Nonconforming tab character in column 3 of line 366
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ wlprnt2.f
+gfortran -c -g -Waliasing -Wampersand -Wsurprising -Wintrinsics-std -Wno-tabs -Wintrinsic-shadow -Wline-truncation -Wreal-q-constant  -cpp -fmax-errors=150  -finit-local-zero -fbounds-check -fno-automatic  -I./ wrcoef2.f
+g++ -g -Wall  -fPIC  -Dlong32="int" -Dlong64="long long" -DLINUX -I./  \
+ampl_energy.o angle.o array_init_2004.o booking.o calibr2.o calibr_fin.o calibr_init_2004.o calibr_main.o cal_koef_correc.o cameras_process.o Cherenkovs.o correc2.o cosdir2.o counters_process.o decode_chamber.o efmass.o event_decode_2005.o filling2.o fngam.o geometry.o hb_cherenkovs.o hb_match_mwpc_lgd2.o hb_scaler.o hist_book_2004.o hyperon_scalers.o idofdetfun.o libapr84.o matr_ent2.o mclus.o new_clb.o ntup_book.o pi0fitbu.o queue_class_function.o shower_recon.o string_text.o track_scalers_prnt.o tracks.o user_cards.o wall2_proc.o wlprnt2.o wrcoef2.o -o calibr.x8664 -lz \
+`cernlib packlib,mathlib,kernlib`
