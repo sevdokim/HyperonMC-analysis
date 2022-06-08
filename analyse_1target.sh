@@ -10,6 +10,7 @@ source $VMC_ENV_SH
 
 #process Hyperon MC production in 1 thread
 #read previous setup if any
+echo "THIS_THREAD_PATH = ${THIS_THREAD_PATH}"
 if [ -z $THIS_THREAD_PATH ] ; then THIS_THREAD_PATH=$PBS_O_WORKDIR ; fi
 if [ -z $THIS_THREAD_PATH ] ; then THIS_THREAD_PATH=. ; fi
 if /bin/ls $THIS_THREAD_PATH/env.sh > /dev/null ; then
@@ -82,7 +83,7 @@ if /bin/ls $HY_HBOOKS_DIR > /dev/null ; then
     echo 'I archive .hbook and copy .hbook .root files to ' $HY_HBOOKS_DIR
     rm -f calibr.hbook.bz2
     bzip2 -9 calibr.hbook
-    mv calibr.hbook $HY_HBOOKS_DIR/$COMBINED_NAME.hbook                    
+    mv calibr.hbook $HY_HBOOKS_DIR/$COMBINED_NAME.hbook
     mv calibr.root $HY_HBOOKS_DIR/$COMBINED_NAME.root
     echo 'Job finished successfully!!! Superb!'
 fi

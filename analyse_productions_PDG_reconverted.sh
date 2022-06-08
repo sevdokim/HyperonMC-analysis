@@ -28,12 +28,12 @@ export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
 #====================================================
 #     cycle over targets
 #====================================================
-#for TGTPRFX in be79mm c78mm al35mm cu7mm sn5mm pb3mm ch80mm
-for TGTPRFX in be79mm
+for TGTPRFX in be79mm c78mm al35mm cu7mm sn5mm pb3mm ch80mm
+#for TGTPRFX in be79mm
 do
     for cond in s4eff
     do
-	for MESON in pi0 eta
+	for MESON in f2 #pi0 eta K0 #f2
         do
 	    export TGT_PRFX=$TGTPRFX
 	    PRODUCTION_NAME=$PERIOD_PRFX$TGT_PRFX  # production name
@@ -83,7 +83,8 @@ do
 	    ln -s $prog_sdv prog.sdv
 	    if [ $(grep -c Run file_list.dat) != 0 ] ; then
 		#we have something to process, submit a job
-		echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
+		#echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
+		echo "qsub -q ihep-medium $WD/analyse_1target.sh" > command
 		$(cat command)
 	    fi #else do not submit anything
 	done

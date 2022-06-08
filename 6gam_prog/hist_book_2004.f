@@ -360,11 +360,11 @@ CSdv   1g events
 c
          call hbook1(30000,'1g events, energy',500,0.,15000.,0.)
          call hbook1(-30000,'E, MeV  1g |x,y|"L#25 cm',500,0.,15000.,0.)
-         do j=4,5
-C-       call hbook2(30000+j,'1g events, XY E .lt. jx100',48,-1026.
-C-   +           ,1026.,48,-1026.,1026.,0.)
+         do j=1,5
+            call hbook2(30000+j,'1g events, XY E .lt. jx100',48,-1026.
+     +           ,1026.,48,-1026.,1026.,0.)
          enddo
-C-       call hbook2(30006,'1g events, XY',48,-1026.
+C     -       call hbook2(30006,'1g events, XY',48,-1026.
 C-   +           ,1026.,48,-1026.,1026.,0.)
 c
       do i=2,6         ! mnozhestvennost' gamma     

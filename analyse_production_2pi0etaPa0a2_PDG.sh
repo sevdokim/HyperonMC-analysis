@@ -11,13 +11,13 @@ export TGT_PRFX                        # Hyperon Tgts dlya formirovaniya imeni f
                                                   # TGT_PRFX = be79mm, c78mm, al35mm, al17mm, cu3mm, cu7mm, sn5mm, pb3mm, ch80mm     
 export PRODUCTION_NAME  # production name     
 export MESON
+export PRODUCTION_NAME
 
-#export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
-#export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
-#export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
-export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/reconvert_from_2008-11/2008-11
+    #export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
+export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
+    #export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
 export AN_CONFIG_DIR=$ANDIR/2008-11_MC
-export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks_pi0eta_reconverted
+export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks
 rm -f Gener_dir
 mkdir -p $HY_HBOOKS_DIR
 export COMBINED_NAME
@@ -29,18 +29,18 @@ export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
 #     cycle over targets
 #====================================================
 #for TGTPRFX in be79mm c78mm al35mm cu7mm sn5mm pb3mm ch80mm
-for TGTPRFX in be79mm
+for TGTPRFX in be79mm c78mm
 do
     for cond in s4eff
     do
-	for MESON in pi0 eta
+	for mes in f0 # a2 2pi0 etap a0 
         do
 	    export TGT_PRFX=$TGTPRFX
+	    MESON=$mes
 	    PRODUCTION_NAME=$PERIOD_PRFX$TGT_PRFX  # production name
 	    PRODUCTION_NAME=${PRODUCTION_NAME}_${MESON}
 	    PRODUCTION_NAME=${PRODUCTION_NAME}_PDG
 	    if [ ! -z $cond ] ; then PRODUCTION_NAME=${PRODUCTION_NAME}_$cond ; fi
-
 	    cd $PRODUCTION_DIR
 	    echo 'Checking' $(pwd)/${PRODUCTION_NAME}/MCruns/
 	    if /bin/ls ${PRODUCTION_NAME}/MCruns/*.gz -1  > /tmp/hyp_runs ; then
@@ -83,7 +83,8 @@ do
 	    ln -s $prog_sdv prog.sdv
 	    if [ $(grep -c Run file_list.dat) != 0 ] ; then
 		#we have something to process, submit a job
-		echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
+		#echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
+		echo "qsub -q ihep-medium $WD/analyse_1target.sh" > command
 		$(cat command)
 	    fi #else do not submit anything
 	done

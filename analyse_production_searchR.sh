@@ -11,13 +11,13 @@ export TGT_PRFX                        # Hyperon Tgts dlya formirovaniya imeni f
                                                   # TGT_PRFX = be79mm, c78mm, al35mm, al17mm, cu3mm, cu7mm, sn5mm, pb3mm, ch80mm     
 export PRODUCTION_NAME  # production name     
 export MESON
+export PRODUCTION_NAME
 
-#export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
-#export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
-#export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
-export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/reconvert_from_2008-11/2008-11
+    #export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
+export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
+    #export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
 export AN_CONFIG_DIR=$ANDIR/2008-11_MC
-export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks_pi0eta_reconverted
+export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks
 rm -f Gener_dir
 mkdir -p $HY_HBOOKS_DIR
 export COMBINED_NAME
@@ -28,19 +28,20 @@ export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
 #====================================================
 #     cycle over targets
 #====================================================
-#for TGTPRFX in be79mm c78mm al35mm cu7mm sn5mm pb3mm ch80mm
-for TGTPRFX in be79mm
+for TGTPRFX in be79mm c78mm #cu7mm sn5mm pb3mm ch80mm
+#for TGTPRFX in al35mm cu7mm sn5mm pb3mm ch80mm
+#for TGTPRFX in be79mm
 do
     for cond in s4eff
     do
-	for MESON in pi0 eta
+	for mass in {520..1000..20}
         do
 	    export TGT_PRFX=$TGTPRFX
+	    MESON=R
 	    PRODUCTION_NAME=$PERIOD_PRFX$TGT_PRFX  # production name
 	    PRODUCTION_NAME=${PRODUCTION_NAME}_${MESON}
-	    PRODUCTION_NAME=${PRODUCTION_NAME}_PDG
+	    PRODUCTION_NAME=${PRODUCTION_NAME}_M${mass}MeV
 	    if [ ! -z $cond ] ; then PRODUCTION_NAME=${PRODUCTION_NAME}_$cond ; fi
-
 	    cd $PRODUCTION_DIR
 	    echo 'Checking' $(pwd)/${PRODUCTION_NAME}/MCruns/
 	    if /bin/ls ${PRODUCTION_NAME}/MCruns/*.gz -1  > /tmp/hyp_runs ; then
@@ -51,6 +52,11 @@ do
 	    
 	    COMBINED_NAME=$PRODUCTION_NAME
 	    echo 'I combined name:' ${COMBINED_NAME}
+	    #skip analysis if root file already exists
+	    if [ -e $HY_HBOOKS_DIR/${COMBINED_NAME}.root ] ; then 
+		echo "$HY_HBOOKS_DIR/${COMBINED_NAME}.root exists. Skipping"
+		continue
+	    fi
 	    cd $WD
 	    mkdir -p MC_$COMBINED_NAME
 	    cd MC_$COMBINED_NAME
@@ -62,6 +68,7 @@ do
 	    fi
 	    rm -f Gener_dir
 	    ln -s $PRODUCTION_DIR Gener_dir
+	    rm -f command
             #prepare filelist.dat
 	    case "$TGT_PRFX" in 
 		"be79mm")	echo "/ Distance mm: 3698; 79. 10021"  > file_list.dat	;;
