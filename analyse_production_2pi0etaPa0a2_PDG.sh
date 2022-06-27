@@ -29,11 +29,11 @@ export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
 #     cycle over targets
 #====================================================
 #for TGTPRFX in be79mm c78mm al35mm cu7mm sn5mm pb3mm ch80mm
-for TGTPRFX in be79mm c78mm
+for TGTPRFX in be79mm c78mm ch80mm
 do
     for cond in s4eff
     do
-	for mes in f0 # a2 2pi0 etap a0 
+	for mes in 2pi0 #a2 2pi0 a0 #etap a0 
         do
 	    export TGT_PRFX=$TGTPRFX
 	    MESON=$mes
@@ -57,7 +57,7 @@ do
 	    n=0
 	    if [ -e file_list.dat ] ; then
 		n=$(grep -c Run file_list.dat)
-		#if [ $n = 10 ]; then  continue ; fi #all data are is analysed already.
+		#if [ $n = 10 ]; then  continue ; fi #all data is analysed already.
 		#so just skip it in order to save CPU time
 	    fi
 	    rm -f Gener_dir
@@ -83,8 +83,8 @@ do
 	    ln -s $prog_sdv prog.sdv
 	    if [ $(grep -c Run file_list.dat) != 0 ] ; then
 		#we have something to process, submit a job
-		#echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
-		echo "qsub -q ihep-medium $WD/analyse_1target.sh" > command
+		echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
+		#echo "qsub -q ihep-medium $WD/analyse_1target.sh" > command
 		$(cat command)
 	    fi #else do not submit anything
 	done

@@ -33,12 +33,12 @@ for TGTPRFX in be79mm c78mm ch80mm
 do
     for cond in s4eff
     do
-	for mes in eta #f0 # a2 2pi0 etap a0 
+	for mes in omg # eta #f0 # a2 2pi0 etap a0 
         do
 	    export TGT_PRFX=$TGTPRFX
 	    MESON=$mes
 	    PRODUCTION_NAME=$PERIOD_PRFX$TGT_PRFX  # production name
-	    PRODUCTION_NAME=${PRODUCTION_NAME}_${MESON}_3pi0
+	    PRODUCTION_NAME=${PRODUCTION_NAME}_${MESON}
 	    PRODUCTION_NAME=${PRODUCTION_NAME}_PDG
 	    if [ ! -z $cond ] ; then PRODUCTION_NAME=${PRODUCTION_NAME}_$cond ; fi
 	    cd $PRODUCTION_DIR
