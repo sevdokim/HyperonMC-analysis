@@ -57,7 +57,7 @@ do
 	    n=0
 	    if [ -e file_list.dat ] ; then
 		n=$(grep -c Run file_list.dat)
-		if [ $n = 10 ]; then  continue ; fi #all data are is analysed already.
+		#if [ $n = 10 ]; then  continue ; fi #all data are is analysed already.
 		#so just skip it in order to save CPU time
 	    fi
 	    rm -f Gener_dir

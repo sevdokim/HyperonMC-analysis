@@ -28,48 +28,40 @@ export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
 #====================================================
 #     cycle over targets
 #====================================================
-#for TGTPRFX in be79mm c78mm #cu7mm sn5mm pb3mm ch80mm
-#for TGTPRFX in al35mm cu7mm sn5mm pb3mm ch80mm
-for TGTPRFX in be79mm c78mm
+for TGTPRFX in al35mm cu7mm sn5mm pb3mm ch80mm
+#for TGTPRFX in be79mm c78mm
 do
     for cond in s4eff
     do
-	for mass in {20..1300..20}
+	for mes in 2pi0 #a2 2pi0 a0 #etap a0 
         do
 	    export TGT_PRFX=$TGTPRFX
-	    MESON=R
+	    MESON=$mes
 	    PRODUCTION_NAME=$PERIOD_PRFX$TGT_PRFX  # production name
 	    PRODUCTION_NAME=${PRODUCTION_NAME}_${MESON}
-	    PRODUCTION_NAME=${PRODUCTION_NAME}_M${mass}MeV
+	    PRODUCTION_NAME=${PRODUCTION_NAME}_Swave
 	    if [ ! -z $cond ] ; then PRODUCTION_NAME=${PRODUCTION_NAME}_$cond ; fi
 	    cd $PRODUCTION_DIR
 	    echo 'Checking' $(pwd)/${PRODUCTION_NAME}/MCruns/
 	    if /bin/ls ${PRODUCTION_NAME}/MCruns/*.gz -1  > /tmp/hyp_runs ; then
-		nfiles=$(/bin/ls ${PRODUCTION_NAME}/MCruns/*.gz -1 | grep gz -c)
-		echo '${nfiles} .gz files found. Putted in list' /tmp/hyp_runs
+		echo 'Some .gz files found. Putted in list' /tmp/hyp_runs
 	    else 
 		echo 'Did not find anything! Moving on...'
 	    fi
 	    
 	    COMBINED_NAME=$PRODUCTION_NAME
 	    echo 'I combined name:' ${COMBINED_NAME}
-	    #skip analysis if root file already exists
-	    if [ -e $HY_HBOOKS_DIR/${COMBINED_NAME}.root ] ; then 
-		echo "$HY_HBOOKS_DIR/${COMBINED_NAME}.root exists. Skipping"
-		continue
-	    fi
 	    cd $WD
 	    mkdir -p MC_$COMBINED_NAME
 	    cd MC_$COMBINED_NAME
 	    n=0
 	    if [ -e file_list.dat ] ; then
 		n=$(grep -c Run file_list.dat)
-		#if [ $n = 10 ]; then  continue ; fi #all data are is analysed already.
+		#if [ $n = 10 ]; then  continue ; fi #all data is analysed already.
 		#so just skip it in order to save CPU time
 	    fi
 	    rm -f Gener_dir
 	    ln -s $PRODUCTION_DIR Gener_dir
-	    rm -f command
             #prepare filelist.dat
 	    case "$TGT_PRFX" in 
 		"be79mm")	echo "/ Distance mm: 3698; 79. 10021"  > file_list.dat	;;
@@ -91,7 +83,8 @@ do
 	    ln -s $prog_sdv prog.sdv
 	    if [ $(grep -c Run file_list.dat) != 0 ] ; then
 		#we have something to process, submit a job
-		echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
+		#echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
+		echo "qsub -q ihep-medium $WD/analyse_1target.sh" > command
 		$(cat command)
 	    fi #else do not submit anything
 	done

@@ -13,55 +13,58 @@ export PRODUCTION_NAME  # production name
 export MESON
 export PRODUCTION_NAME
 
-    #export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
-export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
-    #export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
+#export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
+#export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
+export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/reconvert_from_2008-11/2008-11
+#export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
 export AN_CONFIG_DIR=$ANDIR/2008-11_MC
-export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks
+#export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks
+export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks_pi0eta_reconverted
 rm -f Gener_dir
 mkdir -p $HY_HBOOKS_DIR
 export COMBINED_NAME
 export WD=$(pwd)
 #export prog_sdv=$ANDIR/24.01.2020_prog/calibr.x8664
-export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
+#export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
+export prog_sdv=/afs/ihep.su/user/s/sevdokim/24.01.2020_prog_2pi0/calibr.x8664
 
 #====================================================
 #     cycle over targets
 #====================================================
-#for TGTPRFX in be79mm c78mm #cu7mm sn5mm pb3mm ch80mm
-#for TGTPRFX in al35mm cu7mm sn5mm pb3mm ch80mm
-for TGTPRFX in be79mm c78mm
+for TGTPRFX in be79mm c78mm al35mm cu7mm sn5mm pb3mm ch80mm
+#for TGTPRFX in be79mm
 do
     for cond in s4eff
     do
-	for mass in {20..1300..20}
+	for variation in "no_variation" #"dist+1percent" "dist-1percent" "enorm+1percent" "enorm-1percent"
         do
 	    export TGT_PRFX=$TGTPRFX
-	    MESON=R
+	    MESON=eta
 	    PRODUCTION_NAME=$PERIOD_PRFX$TGT_PRFX  # production name
 	    PRODUCTION_NAME=${PRODUCTION_NAME}_${MESON}
-	    PRODUCTION_NAME=${PRODUCTION_NAME}_M${mass}MeV
+	    PRODUCTION_NAME=${PRODUCTION_NAME}_PDG
 	    if [ ! -z $cond ] ; then PRODUCTION_NAME=${PRODUCTION_NAME}_$cond ; fi
 	    cd $PRODUCTION_DIR
 	    echo 'Checking' $(pwd)/${PRODUCTION_NAME}/MCruns/
 	    if /bin/ls ${PRODUCTION_NAME}/MCruns/*.gz -1  > /tmp/hyp_runs ; then
-		nfiles=$(/bin/ls ${PRODUCTION_NAME}/MCruns/*.gz -1 | grep gz -c)
-		echo '${nfiles} .gz files found. Putted in list' /tmp/hyp_runs
+		echo 'Some .gz files found. Putted in list' /tmp/hyp_runs
 	    else 
 		echo 'Did not find anything! Moving on...'
 	    fi
-	    
-	    COMBINED_NAME=$PRODUCTION_NAME
+	    case "$variation" in
+                "dist+1percent") percent_dist=101; percent_enorm=100;;
+		"dist-1percent") percent_dist=99; percent_enorm=100;;
+		"enorm+1percent") percent_dist=100; percent_enorm=101;;
+		"enorm-1percent") percent_dist=100; percent_enorm=99;;
+		*) percent_dist=100; percent_enorm=100;; #no variation
+	    esac
+	    COMBINED_NAME=${PRODUCTION_NAME}_${variation}
 	    echo 'I combined name:' ${COMBINED_NAME}
-	    #skip analysis if root file already exists
-	    if [ -e $HY_HBOOKS_DIR/${COMBINED_NAME}.root ] ; then 
-		echo "$HY_HBOOKS_DIR/${COMBINED_NAME}.root exists. Skipping"
-		continue
-	    fi
 	    cd $WD
 	    mkdir -p MC_$COMBINED_NAME
 	    cd MC_$COMBINED_NAME
 	    n=0
+	    #skip processing due to some condition
 	    if [ -e file_list.dat ] ; then
 		n=$(grep -c Run file_list.dat)
 		#if [ $n = 10 ]; then  continue ; fi #all data are is analysed already.
@@ -69,20 +72,22 @@ do
 	    fi
 	    rm -f Gener_dir
 	    ln -s $PRODUCTION_DIR Gener_dir
-	    rm -f command
             #prepare filelist.dat
-	    case "$TGT_PRFX" in 
-		"be79mm")	echo "/ Distance mm: 3698; 79. 10021"  > file_list.dat	;;
-		"c78mm")	echo "/ Distance mm: 3695; 78. 10284"  > file_list.dat	;;
-		"al35mm")       echo "/ Distance mm: 3658; 35. 9956"  > file_list.dat	;;
-		"al17mm")	echo "/	Distance mm: 3776; 17. 9726"   > file_list.dat  ;;
-		"cu3mm")	echo "/ Distance mm: 3674; 3. 9746"    > file_list.dat	;;
-		"cu7mm")	echo "/ Distance mm: 3672; 7. 9788"    > file_list.dat 	;;
-		"sn5mm")	echo "/ Distance mm: 3673; 5. 9792"    > file_list.dat	;;
-		"pb3mm")        echo "/ Distance mm: 3674; 3. 9549"    > file_list.dat  ;;
-		"ch80mm")       echo "/ Distance mm: 3700; 80. 9980"   > file_list.dat	;;
-		*)              echo "/ Distance mm: 3700; 80. 9781"   > file_list.dat  ;; #default value (Be)
-	    esac
+	    case "$TGT_PRFX" in
+		"be79mm")	dist=3698; thick=79; enorm=10021;;
+		"c78mm")	dist=3695; thick=78; enorm=10284;;
+		"al35mm")       dist=3658; thick=35; enorm=9956;;
+		"al17mm")	dist=3776; thick=17; enorm=9726;;
+		"cu3mm")	dist=3674; thick=3; enorm=9746;;
+		"cu7mm")	dist=3672; thick=7; enorm=9788;;
+		"sn5mm")	dist=3673; thick=5; enorm=9792;;
+		"pb3mm")        dist=3674; thick=3; enorm=9549;;
+		"ch80mm")       dist=3700; thick=80; enorm=9980;;
+		*)              dist=3698; thick=79; enorm=10021;; #default value (Be)
+	    esac	    
+	    dist=$(($dist * $percent_dist / 100))
+	    enorm=$(($enorm * $percent_enorm / 100))
+	    echo "/ Distance mm: ${dist}; ${thick}. ${enorm}"   > file_list.dat
 	    echo './Gener_dir/' >> file_list.dat
 	    cat /tmp/hyp_runs >> file_list.dat
 	    export THIS_THREAD_PATH=$(pwd)
@@ -94,7 +99,7 @@ do
 		echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
 		$(cat command)
 	    fi #else do not submit anything
-	done
-    done
-done
+	done # for variation
+    done # for cond
+done # for TGTPRFX
 cd $WD

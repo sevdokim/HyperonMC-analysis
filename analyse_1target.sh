@@ -8,6 +8,8 @@
 VMC_ENV_SH=/afs/ihep.su/user/s/sevdokim/HyperonMC-factory/Hyp_RegGen/vmc_env.sh
 source $VMC_ENV_SH
 
+echo "Strating job at $(date)"
+
 #process Hyperon MC production in 1 thread
 #read previous setup if any
 echo "THIS_THREAD_PATH = ${THIS_THREAD_PATH}"
@@ -65,9 +67,11 @@ if ./prog.sdv > log_analysis ; then
 else 
     echo 'Something went wront with analyzer. Please check.'; 
     pwd
-    ls -lth 
+    ls -lth
+    cp -ap log_analysis $THIS_THREAD_PATH
     exit 1 ;
 fi
+echo "Finished analysis $(date). Starting converting calibr.hbook to root file." 
 #=============================== converter ===================================================
 echo "Converting: h2root calibr.hbook >& log_converter"
 if h2root calibr.hbook >& log_converter ; then 
@@ -77,6 +81,7 @@ else
     echo 'Something went wront with analyzer. Please check.'; 
     pwd
     ls -lth
+    cp -ap calibr.hbook log_converter log_analysis.bz2 log_analysis_part $THIS_THREAD_PATH
     exit 1 
 fi
 if /bin/ls $HY_HBOOKS_DIR > /dev/null ; then
@@ -92,3 +97,4 @@ pwd ; ls -lth;
 echo "Copying results to $THIS_THREAD_PATH"
 echo "cp -ap log* *.root *.hbook *.bz2 $THIS_THREAD_PATH"
 cp -ap log* *.root *.hbook *.bz2 $THIS_THREAD_PATH
+echo "Finished job at $(date)"
