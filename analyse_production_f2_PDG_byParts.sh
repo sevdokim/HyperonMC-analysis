@@ -55,7 +55,7 @@ do
 	echo "I found $nfiles_total .gz files, will process them in $nparts parts"
 	for (( part=1; part<=$nparts; part++ ))
 	do
-	    COMBINED_NAME=${PRODUCTION_NAME}_part${part}
+	    COMBINED_NAME=${PRODUCTION_NAME}_part${part} 
 	    echo 'I combined name:' ${COMBINED_NAME}
 	    cd $WD
 	    mkdir -p MC_$COMBINED_NAME
@@ -89,6 +89,7 @@ do
 	    printenv > env.sh
 	    rm -f prog.sdv
 	    ln -s $prog_sdv prog.sdv
+	    if /bin/ls $HY_HBOOKS_DIR/${COMBINED_NAME}.root >& /dev/null ; then continue; fi
 	    if [ $(grep -c Run file_list.dat) != 0 ] ; then
 		#we have something to process, submit a job
 		#echo "qsub -q ihep-medium $WD/analyse_1target.sh" > command

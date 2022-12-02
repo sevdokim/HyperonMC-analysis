@@ -37,7 +37,7 @@ do
     for cond in s4eff
     do
 	#for variation in "no_variation" #"dist+0.5percent" "dist-0.5percent" "enorm+0.5percent" "enorm-0.5percent"
-	for variation in "dist+0.5percent" "dist-0.5percent" "enorm+0.5percent" "enorm-0.5percent" "dist+1.5percent" "dist-1.5percent" "enorm+1.5percent" "enorm-1.5percent" "dist+2percent" "dist-2percent" "enorm+2percent" "enorm-2percent"
+	for variation in "dist+0.5percent" "dist-0.5percent" "enorm+0.5percent" "enorm-0.5percent" "dist+1.5percent" "dist-1.5percent" "enorm+1.5percent" "enorm-1.5percent" "dist+2percent" "dist-2percent" "enorm+2percent" "enorm-2percent" "dist+1percent" "dist-1percent" "enorm+1percent" "enorm-1percent" "no_variation"
         do
 	    export TGT_PRFX=$TGTPRFX
 	    MESON=f2

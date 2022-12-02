@@ -14,16 +14,17 @@ export MESON
 export PRODUCTION_NAME
 
     #export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
-export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
+#export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
+export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/reconvert_from_2008-11/2008-11
     #export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
 export AN_CONFIG_DIR=$ANDIR/2008-11_MC
-export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks
+export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks_pi0eta_reconverted
 rm -f Gener_dir
 mkdir -p $HY_HBOOKS_DIR
 export COMBINED_NAME
 export WD=$(pwd)
 #export prog_sdv=$ANDIR/24.01.2020_prog/calibr.x8664
-export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
+export prog_sdv=/afs/ihep.su/user/s/sevdokim/24.01.2020_prog_2pi0/calibr.x8664
 
 #====================================================
 #     cycle over targets
