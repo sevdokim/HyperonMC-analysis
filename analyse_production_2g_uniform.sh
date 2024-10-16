@@ -6,56 +6,49 @@
 
 export PERIOD=2008-11                         # Hyperon Runs (2007-11, 2008-04, 2008-11, 2009-11, 2011-04 ... -- 15 runs in total) 
 export PERIOD_PRFX=nov08_                     # Period prefix for files:  file_list.dat ==> file_list_nov08.dat  
-export iter=2
+
 export TGT_PRFX                        # Hyperon Tgts dlya formirovaniya imeni file_list_nov08.dat ==> file_list_nov08_be79mm.dat
                                                   # TGT_PRFX = be79mm, c78mm, al35mm, al17mm, cu3mm, cu7mm, sn5mm, pb3mm, ch80mm     
 export PRODUCTION_NAME  # production name     
 export MESON
 export PRODUCTION_NAME
 
-#export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
+    #export PRODUCTION_DIR=$ANDIR/MC_05.02.2019/2008-11_Gener/
 export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/2008-11_Gener
-#export PRODUCTION_DIR=/lustre/ihep.su/data/hyperon/HYPERON_MC/evdokimov/reconvert_from_2008-11/2008-11
-#export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
+    #export PRODUCTION_DIR=$ANDIR/sdv_MCruns/2008-11_Gener/
 export AN_CONFIG_DIR=$ANDIR/2008-11_MC
-export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks_pi0eta_reconverted/f2_iter${iter}
+export HY_HBOOKS_DIR=$AN_CONFIG_DIR/hbooks
 rm -f Gener_dir
 mkdir -p $HY_HBOOKS_DIR
 export COMBINED_NAME
 export WD=$(pwd)
 #export prog_sdv=$ANDIR/24.01.2020_prog/calibr.x8664
-#export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
-export prog_sdv=/afs/ihep.su/user/s/sevdokim/24.01.2020_prog_2pi0/calibr.x8664
+export prog_sdv=/afs/ihep.su/user/s/sevdokim/6gam_prog/calibr.x8664
 
 #====================================================
 #     cycle over targets
 #====================================================
-for TGTPRFX in be79mm c78mm al35mm cu7mm sn5mm pb3mm ch80mm
-#for TGTPRFX in be79mm
+#for TGTPRFX in be79mm c78mm al35mm cu7mm sn5mm pb3mm ch80mm
+for TGTPRFX in be79mm c78mm
 do
     for cond in s4eff
     do
-	files_per_part=10
-	export TGT_PRFX=$TGTPRFX
-	MESON=f2
-	PRODUCTION_NAME=$PERIOD_PRFX$TGT_PRFX  # production name
-	PRODUCTION_NAME=${PRODUCTION_NAME}_${MESON}
-	PRODUCTION_NAME=${PRODUCTION_NAME}_iter${iter}
-	if [ ! -z $cond ] ; then PRODUCTION_NAME=${PRODUCTION_NAME}_$cond ; fi
-	cd $PRODUCTION_DIR
-	echo 'Checking' $(pwd)/${PRODUCTION_NAME}/MCruns/
-	if /bin/ls ${PRODUCTION_NAME}/MCruns/*.gz -1  > /tmp/hyp_runs ; then
-	    echo 'Some .gz files found. Putted in list' /tmp/hyp_runs
-	else 
-	    echo 'Did not find anything! Moving on...'
-	fi
-	nfiles_total=$(grep -c ".gz" /tmp/hyp_runs)
-	nparts=$(($nfiles_total / $files_per_part))
-	if [[ $(($nparts * $files_per_part)) -lt $nfiles_total ]]; then let "nparts=nparts+1"; fi
-	echo "I found $nfiles_total .gz files, will process them in $nparts parts"
-	for (( part=1; part<=$nparts; part++ ))
-	do
-	    COMBINED_NAME=${PRODUCTION_NAME}_part${part} 
+	for mes in 2g_uniform #f0 # a2 2pi0 etap a0 
+        do
+	    export TGT_PRFX=$TGTPRFX
+	    MESON=$mes
+	    PRODUCTION_NAME=$PERIOD_PRFX$TGT_PRFX  # production name
+	    PRODUCTION_NAME=${PRODUCTION_NAME}_${MESON}
+	    if [ ! -z $cond ] ; then PRODUCTION_NAME=${PRODUCTION_NAME}_$cond ; fi
+	    cd $PRODUCTION_DIR
+	    echo 'Checking' $(pwd)/${PRODUCTION_NAME}/MCruns/
+	    if /bin/ls ${PRODUCTION_NAME}/MCruns/*.gz -1  > /tmp/hyp_runs ; then
+		echo 'Some .gz files found. Putted in list' /tmp/hyp_runs
+	    else 
+		echo 'Did not find anything! Moving on...'
+	    fi
+	    
+	    COMBINED_NAME=$PRODUCTION_NAME
 	    echo 'I combined name:' ${COMBINED_NAME}
 	    cd $WD
 	    mkdir -p MC_$COMBINED_NAME
@@ -82,18 +75,15 @@ do
 		*)              echo "/ Distance mm: 3700; 80. 9781"   > file_list.dat  ;; #default value (Be)
 	    esac
 	    echo './Gener_dir/' >> file_list.dat
-	    head -n $files_per_part /tmp/hyp_runs >> file_list.dat
-	    tail -n +$(($files_per_part + 1)) /tmp/hyp_runs > /tmp/hyp_runs1
-	    mv /tmp/hyp_runs1 /tmp/hyp_runs
+	    cat /tmp/hyp_runs >> file_list.dat
 	    export THIS_THREAD_PATH=$(pwd)
 	    printenv > env.sh
 	    rm -f prog.sdv
 	    ln -s $prog_sdv prog.sdv
-	    if /bin/ls $HY_HBOOKS_DIR/${COMBINED_NAME}.root >& /dev/null ; then continue; fi
 	    if [ $(grep -c Run file_list.dat) != 0 ] ; then
 		#we have something to process, submit a job
-		#echo "qsub -q ihep-medium $WD/analyse_1target.sh" > command
 		echo "qsub -q ihep-short $WD/analyse_1target.sh" > command
+		#echo "qsub -q ihep-medium $WD/analyse_1target.sh" > command
 		$(cat command)
 	    fi #else do not submit anything
 	done
